@@ -1,7 +1,8 @@
 /* NULL PIT · 首页竞技场 teaser (长内容在 /arena/ /rewards/ /guide/ 子页) */
 const STYLES = `
-html,body{overflow:auto !important;height:auto !important;min-height:100%}
-#app{flex-direction:column !important;align-items:stretch !important;justify-content:flex-start !important;height:auto !important;min-height:100vh}
+html{overflow:auto !important;height:auto !important}
+body{overflow:auto !important;height:auto !important;min-height:100vh}
+#app{height:100vh !important}
 .arena-teaser{border-top:1px solid var(--line);padding:52px 0 64px;margin-top:36px;background:var(--void)}
 .at-in{max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(280px,420px) 1fr;gap:36px;align-items:center}
 .at-in img{width:100%;border:1px solid var(--line);border-radius:8px;display:block}
@@ -48,16 +49,10 @@ function teaserHTML() {
     const host = document.createElement("div");
     host.innerHTML = teaserHTML();
     const sec = host.firstElementChild;
-    const app = document.getElementById("app") || document.body;
-    // 主 app 异步渲染 + replaceChildren → MutationObserver 重挂
-    const attach = () => { if (!sec.isConnected) app.appendChild(sec); };
+    // 挂在 body 尾部 (#app 之外): 游戏屏布局零干扰, 主 app 重绘也冲不到
+    const attach = () => { if (!sec.isConnected) document.body.appendChild(sec); };
     attach();
-    const mo = new MutationObserver(() => {
-      if (sec.isConnected) return;
-      if (app.children.length) requestAnimationFrame(attach);
-    });
-    mo.observe(app, { childList: true });
     let n = 0;
-    const t = setInterval(() => { attach(); if (++n > 10 || (sec.isConnected && app.children.length > 1)) clearInterval(t); }, 1500);
+    const t = setInterval(() => { attach(); if (++n > 8 || sec.isConnected) clearInterval(t); }, 1500);
   } catch (e) {}
 })();
