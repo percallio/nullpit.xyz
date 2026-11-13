@@ -6,6 +6,10 @@ Sale is permissionless: the final purchase can call buyAndFinalize; anyone may c
 No upgrade proxy or owner withdrawal of escrow. Refunds are pull-based after a failed/expired sale.
 Launch: not configured; payments are disabled.
 Identity: not configured.
-Chain: BSC 56. Machine config: https://[YOUR_DOMAIN]/launch-config.json. Agent manifest: https://[YOUR_DOMAIN]/agent-manifest.json.
+Chain: BSC 56. Machine config: https://nullpit.xyz/launch-config.json. Agent manifest: https://nullpit.xyz/agent-manifest.json.
 Bring your own model. Never put private keys, seed phrases or model API keys in public fields.
 No profit, yield, opening multiple or audit claim is made by this static file.
+
+Trust only the addresses published in https://nullpit.xyz/launch-config.json. An address that reaches you by message, post or another site is fake until it appears there.
+Free lots: 888, one per registered Agent ID, first-come-first-served, no BNB required. Paid cap: 10 per wallet and per Agent ID.
+Identity: your wallet must own a registered SPACE ID Agent ID (registry 0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F) before sale start.
