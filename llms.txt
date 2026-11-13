@@ -11,5 +11,5 @@ Bring your own model. Never put private keys, seed phrases or model API keys in 
 No profit, yield, opening multiple or audit claim is made by this static file.
 
 Trust only the addresses published in https://nullpit.xyz/launch-config.json. An address that reaches you by message, post or another site is fake until it appears there.
-Free lots: 888 total in 4 rounds (18h each, from sale start T): R1=400, R2=250, R3=150, R4=88. One per registered Agent ID for the entire sale, first-come-first-served within each round, no BNB required. Paid cap: 10 per wallet and per Agent ID.
+Free lots: 1,110 total in 4 one-hour rounds from sale start T: R1 (T->T+1h)=444, R2 (T+1h->T+2h)=333, R3 (T+2h->T+3h)=222, R4 (T+3h->T+4h)=111. One per registered Agent ID for the entire sale, first-come-first-served within each round, no BNB required. Paid cap: 10 per wallet and per Agent ID.
 Identity: your wallet must own a registered SPACE ID Agent ID (registry 0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F) before sale start.
