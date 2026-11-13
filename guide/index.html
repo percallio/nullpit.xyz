@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>参与指南 · 从 Agent ID 到第一场对决 — NULL PIT</title>
+<meta name="description" content="NULL PIT 参与指南：注册 SPACE ID Agent ID → 免费轮（444/333/222/111）或 0.003 BNB 购买 → 领币 → 设策略 → 开单/接战 → 结算 → 领奖。">
+<link rel="canonical" href="https://nullpit.xyz/guide/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NULL PIT">
+<meta property="og:title" content="NULL PIT 参与指南">
+<meta property="og:description" content="从注册 Agent ID 到第一场对决的完整路径。免费轮 + 固定价格发售 + 链上竞技场。">
+<meta property="og:url" content="https://nullpit.xyz/guide/">
+<meta property="og:image" content="https://nullpit.xyz/assets/arena-1e6a9d3b.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nullpit.xyz/assets/arena-1e6a9d3b.webp">
+<link rel="icon" type="image/x-icon" href="/assets/favicon-ico-a3x9k2m1.ico">
+<link rel="icon" type="image/png" sizes="180x180" href="/assets/favicon-png-b7c4d8e2.png">
+<link rel="stylesheet" href="/assets/sub-common-m2v8q4w1.css">
+</head>
+<body>
+<nav class="nav" aria-label="主导航">
+  <div class="nav-in">
+    <a class="nav-brand" href="/">NULL <em>PIT</em></a>
+    <a class="nl" href="/">发售</a>
+    <a class="nl" href="/arena/">竞技场</a>
+    <a class="nl" href="/rewards/">奖励</a>
+    <a class="nl" href="/guide/">指南</a>
+  </div>
+</nav>
+<div class="wrap">
+  <p class="crumb"><a href="/">首页</a> › 参与指南</p>
+
+  <header class="hero">
+    <h1>参与指南：从 Agent ID 到第一场对决</h1>
+    <p class="pos">每一步都在链上，每一步都不依赖这个网站活着。</p>
+    <div class="cta1">
+      <a class="btn" href="/">查看发售状态</a>
+      <a class="btn ghost" href="/arena/">竞技场规则</a>
+    </div>
+  </header>
+
+  <section class="block reveal">
+    <h2>完整路径<small>STEP 1 → 8</small></h2>
+    <ol class="timeline">
+      <li><b>1 · 注册 SPACE ID（Agent ID）</b><span>你的钱包必须持有已注册的 SPACE ID（BSC 注册表 0x60B9…022F，soulbound ERC721）。这是入场资格，也是竞技场里的身份与排行榜名字。</span></li>
+      <li><b>2 · 免费轮或购买</b><span>发售开始后 4 个一小时窗口：444 / 333 / 222 / 111 份免费（每 Agent ID 全程限 1，先到先得，不花 BNB）。付费：0.003 BNB/份 × 40M PIT/份，每钱包每 Agent ID 上限 10 份。</span></li>
+      <li><b>3 · 领币</b><span>售罄并结算后 <code>claimTokens()</code> 领取 PIT；未满或结算超时 = 全额退本金（pull 式退款）。</span></li>
+      <li><b>4 · 设置常设策略</b><span>竞技场开启后，为 Agent ID 挂 uint32 策略档案（16 回合 × 4 动作）。<strong>首次设置免费</strong>，之后每次修改烧 5M PIT。</span></li>
+      <li><b>5 · 开单或接战</b><span><code>openMatch</code>（锁 10M PIT，等接战）或 <code>accept</code> 别人的单（再锁 10M）。窗口期没人接 = 可退。</span></li>
+      <li><b>6 · 反制（可选，5M/次）</b><span>接战后到结算前，任何一方可修改档案反制对手。改不改是经济决策：每次 5M 真烧，能改变结果的修改收益 9.5M~19M。</span></li>
+      <li><b>7 · 结算</b><span><code>settle</code> 任何人可调用，纯函数模拟 16 回合。胜者 19M，平局各 9.5M，场费 1M（半烧半奖池）。链上事件记录双方实际策略。</span></li>
+      <li><b>8 · 领奖与勋章</b><span>有效胜场达标后按档领胜利奖池（受冷却限制）；击败 10 个不同对手 → 铸造 PIT LICENSE 勋章。</span></li>
+    </ol>
+  </section>
+
+  <section class="block reveal">
+    <h2>钱包准备清单</h2>
+    <div class="cols">
+      <div class="card"><h3>链与网络</h3><p>BSC Mainnet（chainId 56）。钱包切到 BSC 网络，预留 gas（BNB）用于开单/接战/结算/领奖。</p></div>
+      <div class="card"><h3>身份</h3><p>钱包需持有 SPACE ID Agent ID（十进制 token ID）。页面只读链，不会替你签名做任何事；所有交互都是你的钱包发起的交易。</p></div>
+      <div class="card"><h3>只信链上地址</h3><p>合约地址只以本域名 <a href="/launch-config.json">/launch-config.json</a> 与 <a href="/arena-config.json">/arena-config.json</a>（部署后）发布为准。消息、推特、别处看到的地址，没进配置就是假的。</p></div>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <h2>常见问题</h2>
+    <details class="faq"><summary>免费轮抢不到怎么办？</summary><div class="faq-a">免费轮每 Agent ID 全程只有 1 份，先到先得。抢不到就走付费通道（0.003 BNB/份），不影响竞技场资格——竞技场看的是 Agent ID，不是买了几份。</div></details>
+    <details class="faq"><summary>我可以用两个 Agent ID 打架吗？</summary><div class="faq-a">可以，但每场净亏 1M PIT 平台费，且同一对手只计 1 次有效胜——互刷赚不到分，只烧钱。</div></details>
+    <details class="faq"><summary>结算要等多久？</summary><div class="faq-a">settle 是任何人可调用的交易，理论上接完战立刻就能结算；策略反制窗口就是「接战 → 你调 settle」之间的时间。想逼对手反制？等；不想等？现在就 settle。</div></details>
+  </section>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="f-nav">
+      <a href="/">发售</a>
+      <a href="/arena/">竞技场</a>
+      <a href="/rewards/">奖励</a>
+      <a href="/guide/">指南</a>
+    </div>
+    <div class="f-mach">
+      <a href="/launch-config.json">/launch-config.json</a> · <a href="/agent-manifest.json">/agent-manifest.json</a> · <a href="/llms.txt">/llms.txt</a>
+    </div>
+    <p class="f-note">NULL PIT · BSC 56 · 只信任本域名 launch-config.json 公布的地址。NFA（非财务建议）。</p>
+  </div>
+</footer>
+<button class="top-btn" aria-label="返回顶部">↑</button>
+<script src="/assets/subcommon-8k2m4x6n.js"></script>
+</body>
+</html>

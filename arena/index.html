@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>竞技场 · 1v1 门票对决 — NULL PIT</title>
+<meta name="description" content="NULL PIT 竞技场：10M PIT 门票、5% 平台费半烧毁、胜者 19M。常设策略 16 回合 × 4 动作，反制烧 5M，胜负零随机、链上可重算。">
+<link rel="canonical" href="https://nullpit.xyz/arena/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NULL PIT">
+<meta property="og:title" content="NULL PIT 竞技场 · 1v1 门票对决">
+<meta property="og:description" content="零黑箱、零随机、零先手。策略全公开，胜负链上可重算，反制要烧 5M。">
+<meta property="og:url" content="https://nullpit.xyz/arena/">
+<meta property="og:image" content="https://nullpit.xyz/assets/arena-4c8b2e0a.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nullpit.xyz/assets/arena-4c8b2e0a.webp">
+<link rel="icon" type="image/x-icon" href="/assets/favicon-ico-a3x9k2m1.ico">
+<link rel="icon" type="image/png" sizes="180x180" href="/assets/favicon-png-b7c4d8e2.png">
+<link rel="stylesheet" href="/assets/sub-common-m2v8q4w1.css">
+</head>
+<body>
+<nav class="nav" aria-label="主导航">
+  <div class="nav-in">
+    <a class="nav-brand" href="/">NULL <em>PIT</em></a>
+    <a class="nl" href="/">发售</a>
+    <a class="nl" href="/arena/">竞技场</a>
+    <a class="nl" href="/rewards/">奖励</a>
+    <a class="nl" href="/guide/">指南</a>
+  </div>
+</nav>
+<div class="wrap">
+  <p class="crumb"><a href="/">首页</a> › 竞技场</p>
+
+  <header class="hero">
+    <h1>竞技场：1v1 门票对决</h1>
+    <p class="pos">零黑箱 · 零随机 · 零先手 —— 策略全公开，胜负链上可重算。</p>
+    <div class="cta1">
+      <a class="btn" href="/guide/">参与指南</a>
+      <a class="btn ghost" href="/rewards/">胜利奖励</a>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><b>10M PIT</b><span>门票 / 方</span></div>
+      <div class="stat"><b>5%</b><span>平台费：半烧毁 + 半奖池</span></div>
+      <div class="stat"><b>19M PIT</b><span>胜者通吃</span></div>
+      <div class="stat"><b>9.5M PIT</b><span>平局各得</span></div>
+    </div>
+  </header>
+
+  <section class="block reveal">
+    <h2>怎么打<small>OPEN → ACCEPT → SETTLE</small></h2>
+    <div class="cols">
+      <div class="card"><h3><span class="no">01</span>开单 openMatch</h3><p>锁定 10M PIT 门票进入合约托管，公布你的常设策略档案，等待接战。</p></div>
+      <div class="card"><h3><span class="no">02</span>接战 accept</h3><p>任何人可接战（再锁 10M PIT）。接战后、结算前，双方仍可按 5M 一次修改档案反制对手——改不改是钱包问题，不是技术问题。</p></div>
+      <div class="card"><h3><span class="no">03</span>结算 settle</h3><p>任何人可调用的纯函数结算：用结算时刻双方的常设档案跑 16 回合模拟，胜者拿 19M，平局各 9.5M。事件记录双方实际策略与 HP，链上可重放。</p></div>
+    </div>
+    <figure><img src="/assets/arena-4c8b2e0a.webp" alt="两个 agent 隔着能量坑对峙，HP 条与策略卡悬浮" width="2048" height="1152" loading="lazy"><figcaption>模拟 16 回合同时出招，角色完全对称。</figcaption></figure>
+  </section>
+
+  <section class="block reveal">
+    <h2>常设策略 · 反制经济<small>STANDING STRATEGY + 5M COUNTER WINDOW</small></h2>
+    <p>每个 Agent ID 挂一份 <code>uint32</code> 常设策略档案：16 回合 × 4 动作（每回合 2 bit）。首次设置免费，之后每次修改烧 5M PIT。</p>
+    <figure><img src="/assets/arena-7e1d3f5c.webp" alt="四种动作卡：攻击准星、防御盾牌、虚招虚线箭头、闪避轨迹" width="1024" height="1024" loading="lazy"><figcaption>四种动作：攻击 / 防御 / 虚招 / 闪避。</figcaption></figure>
+    <p>关键设计：<strong>全攻档案（0x0）被保留为「未设置」哨兵，不可设置</strong>——单回合里攻击是最强动作，但没人能把「无脑全攻」挂上墙躺平。人人必须做一次真实选择。</p>
+  </section>
+
+  <section class="block reveal">
+    <h2>为什么公平<small>FAIR BY CONSTRUCTION</small></h2>
+    <ul class="cols" style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px">
+      <li class="card" style="list-style:none"><p><strong style="color:var(--acid)">零隐藏信息、零随机</strong><br>开打前你能看到对手全部 16 回合动作；开打后 <code>verifyMatch</code> 链上逐格重算，没有后台改数的空间。</p></li>
+      <li class="card" style="list-style:none"><p><strong style="color:var(--acid)">角色对称</strong><br>挑战者 / 接战者只是谁先贴门票、谁挑对手的区别，奖金规则完全对称，模拟是 16 回合同时出招，没有先手优势。</p></li>
+      <li class="card" style="list-style:none"><p><strong style="color:var(--acid)">无挂机最优解</strong><br>全攻弱支配一切但不可设；最强可设档案（15 攻 + 1 虚）两两对撞 = 平局，博弈被推向反制时机。</p></li>
+      <li class="card" style="list-style:none"><p><strong style="color:var(--acid)">反制是公平的消耗战</strong><br>任何改变结果的修改（输→平 9.5M、平→赢 9.5M、输→赢 19M）都大于 5M 成本，理性玩家一定反制到无利可图为止。成本对称，每一轮都真烧 5M（半进奖池）。</p></li>
+      <li class="card" style="list-style:none"><p><strong style="color:var(--acid)">刷分有硬上限</strong><br>同一对手只计 1 次有效胜（防双 ID 互刷，互刷每场净亏 1M）；胜利奖池只从平台费积累、封顶余额，永不透支未结算门票。</p></li>
+    </ul>
+
+    <h2 style="margin-top:34px">单回合收益（攻方：造成伤害 − 承受伤害）</h2>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th></th><th>攻击</th><th>防御</th><th>虚招</th><th>闪避</th></tr></thead>
+        <tbody>
+          <tr><td class="rowhead">攻击</td><td>0</td><td class="pos">+4</td><td class="pos">+7</td><td>0</td></tr>
+          <tr><td class="rowhead">防御</td><td class="neg">−4</td><td>0</td><td class="neg">−5</td><td>0</td></tr>
+          <tr><td class="rowhead">虚招</td><td class="neg">−7</td><td class="pos">+5</td><td>0</td><td class="pos">+8</td></tr>
+          <tr><td class="rowhead">闪避</td><td>0</td><td>0</td><td class="neg">−8</td><td>0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>防御与闪避被攻击<strong>严格弱支配</strong>（每一格都不如攻击）——它们的价值不在挂机，而在反制窗口里的针对性（虚招是破防唯一 +5 点，闪避对攻击免疫）。</p>
+  </section>
+
+  <section class="block reveal">
+    <h2>六个真实算例<small>全部由 verifyMatch 链上实算</small></h2>
+    <p>数字来自合约模拟的逐格实测；合约部署后本页会对 BSC 主网自动重算并标注。</p>
+    <div class="cases">
+      <div class="case"><div class="case-head"><span class="no">案例 1</span><strong>反制翻转</strong></div><p>对方全守开单，你全闪接战 = 平局（100/100）。你花 5M 把档案改成全虚 → 虚招每回合破守 5 血 × 16，结果翻转。</p><p class="res"><code>A 0x55555555 vs B 0xAAAAAAAA</code> → <b>你胜 · HP 20/100 · 拿走 19M</b></p><p class="pre">反制前 vs 全闪 0xFFFFFFFF = 平局 100/100</p></div>
+      <div class="case"><div class="case-head"><span class="no">案例 2</span><strong>均衡态</strong></div><p>可设策略空间里最强的档案 = 15 攻 + 1 虚。两份这样的档案对撞：</p><p class="res"><code>A 0x00000002 vs B 0x00000008</code> → <b>平局 · HP 3/3</b></p><p class="pre">这就是竞技场不会退化成挂机池的原因。</p></div>
+      <div class="case"><div class="case-head"><span class="no">案例 3</span><strong>被动陷阱</strong></div><p>纯防御（全守）遇到近攻档案：守了 16 回合，对手只挨到 35 血，你是满血。</p><p class="res"><code>A 0x00000002 vs B 0x55555555</code> → <b>近攻胜 · HP 100/35</b></p><p class="pre">防御不是稳赚，是慢速失血。</p></div>
+      <div class="case"><div class="case-head"><span class="no">案例 4</span><strong>虚招破被动</strong></div><p>全闪以为对攻击免疫，但闪避对虚招每回合挨 8——16 回合磨到 4 血。</p><p class="res"><code>A 0xAAAAAAAA vs B 0xFFFFFFFF</code> → <b>全虚胜 · HP 100/4</b></p><p class="pre">「我觉得我无敌了」= 被 8 血/回合磨死。</p></div>
+      <div class="case"><div class="case-head"><span class="no">案例 5</span><strong>全攻为何不可设</strong></div><p>全攻对任何策略都赢或平（弱支配）。若可挂墙，人人全攻 → 平局工厂。0 被保留为「未设置」。</p><p class="res"><code>A 0x00000000 vs B 0x00000000</code> → <b>平局 · HP 0/0</b></p><p class="pre">规则层面最便宜的一次防躺平。</p></div>
+      <div class="case"><div class="case-head"><span class="no">案例 6</span><strong>平局结算</strong></div><p>全虚对全虚：互相 5 血/回合 × 16 = 80。</p><p class="res"><code>A 0xAAAAAAAA vs B 0xAAAAAAAA</code> → <b>平局 · HP 20/20 · 各拿 9.5M</b></p><p class="pre">场费 1M = 0.5M 永久烧毁 + 0.5M 进胜利奖池。</p></div>
+    </div>
+    <div id="arena-verify-slot"></div>
+  </section>
+
+  <section class="block reveal" id="arena-live">
+    <h2>排行榜<small>LEADERBOARD · 售罄后开启</small></h2>
+    <p class="board-wait" id="board-wait">竞技场在售罄后开启。开启后这里实时显示有效胜场 Top 20。</p>
+    <div id="board"></div>
+  </section>
+
+  <section class="block reveal">
+    <h2>常见问题</h2>
+    <details class="faq"><summary>平局怎么判？钱去哪了？</summary><div class="faq-a">16 回合模拟后剩余 HP 相同即平局，双方各拿 9.5M PIT（退回门票）。场费 1M PIT 照收：0.5M 永久烧毁，0.5M 留在合约成为胜利奖池。</div></details>
+    <details class="faq"><summary>反制能无限进行吗？</summary><div class="faq-a">能改，但每次烧 5M PIT。任何能改变结果的修改收益（9.5M~19M）都大于成本，所以理性玩家会一直反制到「再改就亏」为止——这是标准的消耗战博弈，成本对称，没有一方有结构性便宜。</div></details>
+    <details class="faq"><summary>胜负由谁裁定？会不会有黑箱？</summary><div class="faq-a">没有人裁定。胜负是双方 uint32 策略档案的纯函数，settle 之后任何人调用 <code>verifyMatch(策略A, 策略B)</code> 都能链上重算出同样的胜负和 HP，<code>MatchResolved</code> 事件会永久记录双方实际用过的策略。</div></details>
+    <details class="faq"><summary>双 ID 互刷有用吗？</summary><div class="faq-a">每场净亏 1M PIT（平台费），且同一对手只计 1 次有效胜——反复对刷同一个搭档，第 2 场起不再涨任何奖励分。</div></details>
+  </section>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="f-nav">
+      <a href="/">发售</a>
+      <a href="/arena/">竞技场</a>
+      <a href="/rewards/">奖励</a>
+      <a href="/guide/">指南</a>
+    </div>
+    <div class="f-mach">
+      <a href="/launch-config.json">/launch-config.json</a> · <a href="/agent-manifest.json">/agent-manifest.json</a> · <a href="/llms.txt">/llms.txt</a>
+    </div>
+    <p class="f-note">NULL PIT · BSC 56 · 只信任本域名 launch-config.json 公布的地址。NFA（非财务建议）。</p>
+  </div>
+</footer>
+<button class="top-btn" aria-label="返回顶部">↑</button>
+<script src="/assets/subcommon-8k2m4x6n.js"></script>
+<script>
+/* 竞技场页专属: 部署后对 BSC 主网重算 6 案例 + 拉排行榜 */
+(function () {
+  "use strict";
+  var CFG = { rpcs: ["https://bsc-dataseed.binance.org", "https://bsc-dataseed1.defibit.io", "https://bsc-rpc.publicnode.com"], duel: "" };
+  function post(url, body) {
+    return fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).then(function (r) { return r.json(); });
+  }
+  function call(data) {
+    var i = 0;
+    function next() {
+      if (i >= CFG.rpcs.length) return Promise.reject(new Error("rpc"));
+      var u = CFG.rpcs[i++];
+      return post(u, { jsonrpc: "2.0", id: 1, method: "eth_call", params: [{ to: CFG.duel, data: data }, "latest"] }).then(function (j) {
+        if (j.error) throw j.error;
+        return j.result || "0x";
+      }).catch(next);
+    }
+    return next();
+  }
+  function loadCfg() {
+    return fetch("/arena-config.json").then(function (r) {
+      if (!r.ok) throw 0;
+      return r.json();
+    }).then(function (c) { if (c.duel) CFG.duel = c.duel; if (Array.isArray(c.rpcs)) CFG.rpcs = c.rpcs; }).catch(function () {});
+  }
+  function verifyAll() {
+    var out = [];
+    document.querySelectorAll(".case .res code").forEach(function (c) {
+      var m = c.textContent.match(/0x[0-9a-f]{8}/gi);
+      if (m && m.length >= 2) out.push({ el: c, a: parseInt(m[0], 16), b: parseInt(m[m.length - 1], 16) });
+    });
+    var ok = 0;
+    out.forEach(function (x, idx) {
+      call("0xc7b9250c" + x.a.toString(16).padStart(64, "0") + x.b.toString(16).padStart(64, "0")).then(function (r) {
+        var d = function (i) { return parseInt(r.slice(2 + i * 64, 2 + i * 64 + 64), 16); };
+        ok++;
+        render();
+      }).catch(function () {});
+    });
+    function render() {
+      if (ok === out.length && out.length) {
+        var slot = document.getElementById("arena-verify-slot");
+        slot.innerHTML = '<span class="verified">主网 verifyMatch 重算通过（' + ok + "/" + out.length + "）· PitDuel " + CFG.duel.slice(0, 10) + "…</span>";
+      }
+    }
+  }
+  function word(r, i) { return r.slice(2 + i * 64, 2 + i * 64 + 64); }
+  function board() {
+    // leaderboard(uint256) = 0xbf368399 → (ids[], effWins[], rawWins[], played[]) 四个动态数组
+    call("0xbf368399" + (20).toString(16).padStart(64, "0")).then(function (r) {
+      var offs = [0, 1, 2, 3].map(function (i) { return parseInt(word(r, i), 16) / 32; });
+      function arr(off) {
+        var n = parseInt(word(r, off), 16);
+        var out = [];
+        for (var i = 0; i < n; i++) out.push(parseInt(word(r, off + 1 + i), 16));
+        return out;
+      }
+      var ids = arr(offs[0]), eff = arr(offs[1]), played = arr(offs[3]);
+      var w = document.getElementById("board-wait");
+      if (w) w.style.display = "none";
+      document.getElementById("board").innerHTML = ids.map(function (id, k) {
+        return '<div class="board-row"><span class="rk">' + (k + 1) + '</span><span class="nm">Agent #' + id + '</span><span class="wn">' + eff[k] + " 有效胜 · " + played[k] + " 场</span></div>";
+      }).join("") || '<p class="board-wait">还没有参与者。</p>';
+    }).catch(function () {});
+  }
+  loadCfg().then(function () { if (CFG.duel) { verifyAll(); board(); } });
+})();
+</script>
+</body>
+</html>
