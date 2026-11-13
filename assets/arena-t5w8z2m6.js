@@ -101,7 +101,7 @@ function renderCases() {
 function sectionHTML() {
   const c = COPY;
   return `
-  <section id="arena" class="arena">
+  <section id="arena" class="arena-sec">
     <div class="arena-wrap">
       <header class="arena-head">
         <h2>${esc(c.title)}</h2>
@@ -150,7 +150,9 @@ function sectionHTML() {
 }
 
 const STYLES = `
-#arena.arena{background:var(--void);border-top:1px solid var(--line);padding:56px 0 72px;margin-top:40px}
+html,body{overflow:auto !important;height:auto !important;min-height:100%}
+#app{flex-direction:column !important;align-items:stretch !important;justify-content:flex-start !important;height:auto !important;min-height:100vh}
+#arena.arena-sec{background:var(--void);border-top:1px solid var(--line);padding:56px 0 72px;margin-top:40px}
 .arena-wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 .arena-head h2{color:var(--acid);font-size:2.2em;letter-spacing:.08em;margin:0 0 8px}
 .arena-sub{color:var(--dust);margin:0 0 24px;letter-spacing:.12em}
@@ -269,7 +271,20 @@ function mount() {
   const host = document.createElement("div");
   host.innerHTML = sectionHTML();
   const sec = host.firstElementChild;
-  document.body.appendChild(sec);
+  const app = document.getElementById("app") || document.body;
+  // 主 app 是异步渲染 + replaceChildren 重绘 → 用 MutationObserver 被冲掉就重挂
+  const attach = () => { if (!sec.isConnected) app.appendChild(sec); };
+  attach();
+  const mo = new MutationObserver(() => {
+    if (sec.isConnected) return;
+    if (app.children.length) requestAnimationFrame(attach);
+  });
+  mo.observe(app, { childList: true });
+  let n = 0;
+  const t = setInterval(() => {
+    attach();
+    if (++n > 10 || (sec.isConnected && app.children.length > 1)) clearInterval(t);
+  }, 1500);
 }
 
 (async function main() {
