@@ -34,7 +34,11 @@
   },
   "links": {
     "launchConfig": "./launch-config.json",
-    "llms": "./llms.txt"
+    "arenaConfig": "./arena-config.json",
+    "llms": "./llms.txt",
+    "arena": "https://nullpit.xyz/arena/",
+    "rewards": "https://nullpit.xyz/rewards/",
+    "guide": "https://nullpit.xyz/guide/"
   },
   "notes": [
     "No hosted API; all payments are user-wallet transactions.",
