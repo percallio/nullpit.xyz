@@ -4,7 +4,8 @@
  */
 const ARENA = {
   chainId: 56,
-  rpc: "https://bsc-dataseed.binance.org",
+  rpcs: ["https://bsc-dataseed.binance.org", "https://bsc-dataseed1.defibit.io", "https://bsc-rpc.publicnode.com"],
+  rpc: 0,
   duel: "", // PitDuel 部署后填入; 或发布 /arena-config.json {duel:"0x.."}
 };
 
@@ -105,7 +106,7 @@ function sectionHTML() {
       <header class="arena-head">
         <h2>${esc(c.title)}</h2>
         <p class="arena-sub">${esc(c.sub)}</p>
-        <img class="arena-hero" src="/assets/arena-hero.webp" alt="竞技场主视觉" loading="lazy" />
+        <img class="arena-hero" src="/assets/arena-9f2ka7d1.webp" alt="竞技场主视觉" loading="lazy" />
         <p class="arena-lede">${esc(c.hero)}</p>
       </header>
 
@@ -116,7 +117,7 @@ function sectionHTML() {
       <div class="a-block">
         <h3>${esc(c.strategy.t)}</h3>
         ${c.strategy.p.map((x) => `<p>${esc(x)}</p>`).join("")}
-        <img class="a-quad" src="/assets/arena-strategy-quad.webp" alt="四种动作：攻击/防御/虚招/闪避" loading="lazy" />
+        <img class="a-quad" src="/assets/arena-7e1d3f5c.webp" alt="四种动作：攻击/防御/虚招/闪避" loading="lazy" />
       </div>
 
       <div class="a-block">
@@ -130,13 +131,13 @@ function sectionHTML() {
         <h3>${esc(c.cases.t)}</h3>
         <p class="a-note">${esc(c.cases.note)}</p>
         <div class="a-cases">${renderCases()}</div>
-        <img class="a-duel" src="/assets/arena-duel-faceoff.webp" alt="两个 agent 隔坑对峙" loading="lazy" />
+        <img class="a-duel" src="/assets/arena-4c8b2e0a.webp" alt="两个 agent 隔坑对峙" loading="lazy" />
       </div>
 
       <div class="a-block">
         <h3>${esc(c.tiers.t)}</h3>
         ${c.tiers.p.map((x) => `<p>${esc(x)}</p>`).join("")}
-        <img class="a-badge" src="/assets/arena-badge.webp" alt="PIT LICENSE 勋章" loading="lazy" />
+        <img class="a-badge" src="/assets/arena-2a9c6b8e.webp" alt="PIT LICENSE 勋章" loading="lazy" />
       </div>
 
       <div class="a-block a-board">
@@ -201,7 +202,7 @@ async function loadConfig() {
   try {
     const cfg = await fetchJson("/arena-config.json");
     if (cfg.duel) ARENA.duel = cfg.duel;
-    if (cfg.rpc) ARENA.rpc = cfg.rpc;
+    if (Array.isArray(cfg.rpcs)) ARENA.rpcs = cfg.rpcs;
   } catch { /* 未发布则用常量 */ }
 }
 
@@ -211,12 +212,20 @@ async function verifyCase(a, b) {
     method: "eth_call",
     params: [{ to: ARENA.duel, data: "0xc7b9250c" + a.toString(16).padStart(64, "0") + b.toString(16).padStart(64, "0") }, "latest"],
   });
-  const j = await fetchJson(ARENA.rpc, { method: "POST", headers: { "Content-Type": "application/json" }, body });
-  const r = j.result || "0x";
-  const dec = (i) => parseInt(r.slice(2 + i * 64, 2 + i * 64 + 64), 16);
-  return { winner: dec(0), hpA: dec(1), hpB: dec(2) };
+  let last;
+  for (let k = 0; k < ARENA.rpcs.length; k++) {
+    try {
+      const j = await fetchJson(ARENA.rpcs[k], { method: "POST", headers: { "Content-Type": "application/json" }, body });
+      if (j.error) throw j.error;
+      ARENA.rpc = k;
+      const r = j.result || "0x";
+      const dec = (i) => parseInt(r.slice(2 + i * 64, 2 + i * 64 + 64), 16);
+      return { winner: dec(0), hpA: dec(1), hpB: dec(2) };
+    } catch (e) { last = e; }
+  }
+  throw last;
 }
-// 注: 0x8b79d254 为 verifyMatch(uint32,uint32) 选择器（部署后核对一次）
+// verifyMatch(uint32,uint32) 选择器 = 0xc7b9250c (keccak 实证过)
 
 async function checkCases() {
   if (!ARENA.duel) return;
