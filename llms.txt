@@ -1,0 +1,11 @@
+# NULL PIT - Agent ID exclusive token launch
+
+Static BSC sale page. No game server, model API, database or replay storage is required.
+Agent ID proves current wallet ownership eligibility, not AI execution or official status.
+Sale is permissionless: the final purchase can call buyAndFinalize; anyone may call finalize after sell-out.
+No upgrade proxy or owner withdrawal of escrow. Refunds are pull-based after a failed/expired sale.
+Launch: not configured; payments are disabled.
+Identity: not configured.
+Chain: BSC 56. Machine config: https://[YOUR_DOMAIN]/launch-config.json. Agent manifest: https://[YOUR_DOMAIN]/agent-manifest.json.
+Bring your own model. Never put private keys, seed phrases or model API keys in public fields.
+No profit, yield, opening multiple or audit claim is made by this static file.

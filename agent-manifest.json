@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "project": "NULL PIT",
+  "chainId": "56",
+  "configured": false,
+  "addresses": null,
+  "methods": [
+    "buy(uint256,uint256)",
+    "buyAndFinalize(uint256,uint256)",
+    "claimTokens()",
+    "refund(address)",
+    "finalize()",
+    "markFailed()"
+  ],
+  "reads": [
+    "token()",
+    "pair()",
+    "state()",
+    "lotPrice()",
+    "soldLots()",
+    "totalLots()",
+    "saleStatus()",
+    "contributions(address)"
+  ],
+  "strategy": {
+    "version": "null-pit-combat-v1",
+    "rounds": 16,
+    "actions": [
+      "attack",
+      "guard",
+      "feint",
+      "dodge"
+    ]
+  },
+  "links": {
+    "launchConfig": "./launch-config.json",
+    "llms": "./llms.txt"
+  },
+  "notes": [
+    "No hosted API; all payments are user-wallet transactions.",
+    "Do not embed private keys or model keys.",
+    "Audit status must be verified from an official published report."
+  ]
+}

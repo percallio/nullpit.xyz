@@ -1,0 +1,23 @@
+{
+  "assets": {},
+  "buildHash": "b09ee91b81367872a0383ce2909195879db047fcc3e761cd306198261925afe2",
+  "data": {
+    "characters": [],
+    "locations": []
+  },
+  "formatVersion": 1,
+  "game": {
+    "customTags": [],
+    "id": "null-pit",
+    "kind": "arcade",
+    "stage": {
+      "height": 640,
+      "width": 960
+    },
+    "text": {
+      "speed": 30
+    },
+    "title": "NULL PIT"
+  },
+  "mode": "release"
+}
