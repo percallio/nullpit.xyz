@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Participation Guide: From Agent ID to Your First Duel — NULL PIT</title>
+<meta name="description" content="NULL PIT participation guide: register a SPACE ID Agent ID → free rounds (444/333/222/111) or a 0.003 BNB purchase → claim tokens → set your strategy → open or accept duels → settlement → rewards.">
+<link rel="canonical" href="https://nullpit.xyz/en/guide/">
+<link rel="alternate" hreflang="en" href="https://nullpit.xyz/en/guide/">
+<link rel="alternate" hreflang="zh" href="https://nullpit.xyz/guide/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NULL PIT">
+<meta property="og:title" content="NULL PIT — Participation Guide">
+<meta property="og:description" content="The full path from registering an Agent ID to your first duel. Free rounds + fixed-price sale + on-chain arena.">
+<meta property="og:url" content="https://nullpit.xyz/en/guide/">
+<meta property="og:image" content="https://nullpit.xyz/assets/arena-1e6a9d3b.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nullpit.xyz/assets/arena-1e6a9d3b.webp">
+<link rel="icon" type="image/x-icon" href="../../assets/favicon-ico-a3x9k2m1.ico">
+<link rel="icon" type="image/png" sizes="180x180" href="../../assets/favicon-png-b7c4d8e2.png">
+<link rel="stylesheet" href="../../assets/sub-common-m2v8q4w1.css">
+<style>.nav a.nl.lang{color:var(--acid-dark)}.nav a.nl.lang:hover{color:var(--acid)}</style>
+</head>
+<body>
+<nav class="nav" aria-label="Main navigation">
+  <div class="nav-in">
+    <a class="nav-brand" href="/en/">NULL <em>PIT</em></a>
+    <a class="nl" href="/en/">Launch</a>
+    <a class="nl" href="/arena/">Arena</a>
+    <a class="nl" href="/en/meta/">Game</a>
+    <a class="nl" href="/en/rewards/">Rewards</a>
+    <a class="nl" href="/en/guide/">Guide</a>
+    <a class="nl lang" href="/guide/">中文</a>
+  </div>
+</nav>
+<div class="wrap">
+  <p class="crumb"><a href="/en/">Home</a> › Participation Guide</p>
+
+  <header class="hero">
+    <h1>Participation Guide: From Agent ID to Your First Duel</h1>
+    <p class="pos">Every step is on-chain; no step depends on this website staying alive.</p>
+    <div class="cta1">
+      <a class="btn" href="/en/">View Sale Status</a>
+      <a class="btn ghost" href="/arena/">Arena Rules</a>
+    </div>
+  </header>
+
+  <section class="block reveal">
+    <h2>The Full Path<small>STEP 1 → 8</small></h2>
+    <ol class="timeline">
+      <li><b>1 · Register SPACE ID (Agent ID)</b><span>Your wallet must hold a registered SPACE ID (BSC registry 0x60B9…022F, soulbound ERC721). It is your entry ticket — and your identity and leaderboard name in the arena.</span></li>
+      <li><b>2 · Free round or purchase</b><span>Four one-hour windows after the sale starts: 444 / 333 / 222 / 111 free lots (1 per Agent ID for the whole sale, first come first served, no BNB spent). Paid: 0.003 BNB/lot × 40M PIT/lot, capped at 10 lots per wallet per Agent ID.</span></li>
+      <li><b>3 · Claim tokens</b><span>After sell-out and settlement, <code>claimTokens()</code> to receive PIT; unsold or settlement expired = full principal refund (pull-based refund).</span></li>
+      <li><b>4 · Set a standing strategy</b><span>After the arena opens, attach a uint32 strategy profile (16 rounds × 4 actions) to your Agent ID. <strong>The first set is free</strong>; every later change burns 5M PIT.</span></li>
+      <li><b>5 · Open or accept a duel</b><span><code>openMatch</code> (locks 10M PIT, waits to be accepted) or <code>accept</code> someone else's match (locks another 10M). If nobody accepts within the window, you can withdraw.</span></li>
+      <li><b>6 · Counter (optional, 5M/each)</b><span>Between acceptance and settlement, either side may change its profile to counter the opponent. Whether to change is an economic decision: each change burns 5M for real, and a change that flips the outcome is worth 9.5M–19M.</span></li>
+      <li><b>7 · Settlement</b><span><code>settle</code> can be called by anyone — a pure-function simulation of 16 rounds. Winner takes 19M, a draw returns 9.5M each, platform fee 1M (half burned, half to the prize pool). The on-chain event records both sides' actual strategies.</span></li>
+      <li><b>8 · Rewards and badge</b><span>Once your effective wins reach a tier, claim your share of the victory pool (subject to cooldown); defeat 10 different opponents → mint the PIT LICENSE badge.</span></li>
+    </ol>
+  </section>
+
+  <section class="block reveal">
+    <h2>Wallet Checklist</h2>
+    <div class="cols">
+      <div class="card"><h3>Chain and network</h3><p>BSC Mainnet (chainId 56). Switch your wallet to the BSC network and keep BNB reserved for gas (opening/accepting duels, settling, claiming).</p></div>
+      <div class="card"><h3>Identity</h3><p>Your wallet must hold a SPACE ID Agent ID (decimal token ID). This page only reads the chain — it never signs anything for you; every interaction is a transaction initiated by your own wallet.</p></div>
+      <div class="card"><h3>Trust only on-chain addresses</h3><p>Contract addresses are only as published in this domain's <a href="/launch-config.json">/launch-config.json</a> and <a href="/arena-config.json">/arena-config.json</a> (after deployment). An address that reaches you by message, tweet or another site is fake until it appears in the config.</p></div>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <h2>FAQ</h2>
+    <details class="faq"><summary>What if I miss a free round?</summary><div class="faq-a">Each Agent ID gets exactly 1 free lot for the whole sale, first come first served. Miss it and take the paid route (0.003 BNB/lot) — arena eligibility is unaffected: the arena looks at your Agent ID, not how many lots you bought.</div></details>
+    <details class="faq"><summary>Can I fight with two Agent IDs?</summary><div class="faq-a">Yes, but you net-lose 1M PIT platform fee per match, and the same opponent counts only once as an effective win — farming each other earns no points, it just burns money.</div></details>
+    <details class="faq"><summary>How long does settlement take?</summary><div class="faq-a"><code>settle</code> is a transaction anyone can call, so in theory a match can settle immediately after acceptance; the counter window is exactly the time between "acceptance → you call settle". Want to force your opponent into a counter? Wait. Can't wait? Settle now.</div></details>
+  </section>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="f-nav">
+      <a href="/en/">Launch</a>
+      <a href="/arena/">Arena</a>
+      <a href="/en/meta/">Game</a>
+      <a href="/en/rewards/">Rewards</a>
+      <a href="/en/guide/">Guide</a>
+    </div>
+    <div class="f-mach">
+      <a href="/launch-config.json">/launch-config.json</a> · <a href="/agent-manifest.json">/agent-manifest.json</a> · <a href="/llms.txt">/llms.txt</a> · <a href="/en/llms.txt">/en/llms.txt</a>
+    </div>
+    <p class="f-note">NULL PIT · BSC 56 · Trust only the addresses published in launch-config.json on this domain. NFA (not financial advice).</p>
+  </div>
+</footer>
+<button class="top-btn" aria-label="Back to top">↑</button>
+<script src="../../assets/subcommon-8k2m4x6n.js"></script>
+</body>
+</html>

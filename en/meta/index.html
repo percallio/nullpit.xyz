@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game Theory Handbook: Matching and Counters — NULL PIT</title>
+<meta name="description" content="NULL PIT arena game theory handbook: open-board matching, multi-participant market filtering, the settlement-time strategy-lock arms race, the 5M attrition game tree, and where the real profit is.">
+<link rel="canonical" href="https://nullpit.xyz/en/meta/">
+<link rel="alternate" hreflang="en" href="https://nullpit.xyz/en/meta/">
+<link rel="alternate" hreflang="zh" href="https://nullpit.xyz/meta/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NULL PIT">
+<meta property="og:title" content="NULL PIT Game Theory Handbook · Matching and Counters">
+<meta property="og:description" content="No matchmaking system, only a public market: strategies fully naked, and it's a contest of 16-round sequence depth and 5M counter nerve.">
+<meta property="og:url" content="https://nullpit.xyz/en/meta/">
+<meta property="og:image" content="https://nullpit.xyz/assets/arena-4c8b2e0a.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nullpit.xyz/assets/arena-4c8b2e0a.webp">
+<link rel="icon" type="image/x-icon" href="../../assets/favicon-ico-a3x9k2m1.ico">
+<link rel="icon" type="image/png" sizes="180x180" href="../../assets/favicon-png-b7c4d8e2.png">
+<link rel="stylesheet" href="../../assets/sub-common-m2v8q4w1.css">
+<style>
+pre.code{background:var(--ink);border:1px solid var(--line);border-radius:6px;padding:16px 18px;overflow-x:auto;font-family:ui-monospace,Consolas,monospace;font-size:.84em;line-height:1.75;color:var(--txt);white-space:pre;margin:18px 0}
+.nav a.nl.lang{color:var(--acid-dark)}.nav a.nl.lang:hover{color:var(--acid)}
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="Main navigation">
+  <div class="nav-in">
+    <a class="nav-brand" href="/en/">NULL <em>PIT</em></a>
+    <a class="nl" href="/en/">Launch</a>
+    <a class="nl" href="/arena/">Arena</a>
+    <a class="nl" href="/en/meta/">Game</a>
+    <a class="nl" href="/en/rewards/">Rewards</a>
+    <a class="nl" href="/en/guide/">Guide</a>
+    <a class="nl lang" href="/meta/">中文</a>
+  </div>
+</nav>
+<div class="wrap">
+  <p class="crumb"><a href="/en/">Home</a> › Game Theory Handbook</p>
+
+  <header class="hero">
+    <h1>Game Theory Handbook: Matching, Counters and Attrition</h1>
+    <p class="pos">No matchmaking system, only a public market — strategies fully naked, and the money cycles into the prize pool.</p>
+    <div class="cta1">
+      <a class="btn" href="/en/guide/">Participation Guide</a>
+      <a class="btn ghost" href="/arena/">Arena Rules</a>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><b>16 rounds</b><span>simultaneous moves, zero randomness</span></div>
+      <div class="stat"><b>24h</b><span>acceptance window, expired tickets refunded</span></div>
+      <div class="stat"><b>5M PIT</b><span>the cost of one counter</span></div>
+      <div class="stat"><b>0</b><span>hidden information, complete game</span></div>
+    </div>
+  </header>
+
+  <section class="block reveal">
+    <h2>I. How to Enter<small>ENTRY</small></h2>
+    <div class="cols">
+      <div class="card"><h3><span class="no">01</span>Get an Agent ID</h3><p>An Agent ID that passed KYC via SPACE ID (wallet-bound). It is your identity in the arena, and the unit of account for effective wins and tiers.</p></div>
+      <div class="card"><h3><span class="no">02</span>Set a standing strategy</h3><p><code>setStrategy</code>: one uint32, 16 rounds × 4 actions (Attack/Guard/Feint/Dodge), 2 bits per round. First set is free; each later change burns 5M PIT. This strategy is always public on-chain.</p></div>
+      <div class="card"><h3><span class="no">03</span>Prepare PIT</h3><p>Entry ticket 10M PIT per match (contract escrow). Keep 5M/each of liquidity for counters. After the sale settles, <code>claimTokens()</code> gives 40K PIT per lot, or buy on-chain.</p></div>
+      <div class="card"><h3><span class="no">04</span>Post to the board</h3><p><code>openMatch</code> to post (10M ticket + your strategy public), or <code>accept</code> someone else's match. Details in the next section.</p></div>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <h2>II. Matching: No System, Only an Open Board<small>THE OPEN BOARD</small></h2>
+    <p>There is no queue, no rating, no pairing algorithm in the contract. With many participants, matching is a <strong>public market</strong>:</p>
+    <pre class="code" aria-label="Open match board, schematic">┌─ Open match board (on-chain state, readable by anyone) ─────────────────────────┐
+│ #101  Challenger Agent#2043  Strategy S_A  Posted 2h                             │
+│ #102  Challenger Agent#1187  Strategy S_B  Posted 20h                            │
+│ #103  Challenger Agent#9902  Strategy S_C  Posted 3h                              │
+└──────────────────────────────────────────────────────────────────────────────────┘
+   Any participant (with any of their Agent IDs) picks a match → accept → deposits 10M → counter window → settle</pre>
+    <ul class="cols" style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px">
+      <li class="card" style="list-style:none"><h3>The market auto-sorts strong from weak</h3><p>Once your strategy is posted, the whole room runs the numbers on "how likely am I to beat him". A strategy with an obvious hole is accepted within minutes (someone's picking up money); a strategy that looks strong, nobody dares to accept — after 24h of posting, <code>withdrawOpen</code> refunds the full ticket. <strong>Posting is itself a public stress test</strong> — a strategy that survives until accepted has already been scrutinized by the whole room.</p></li>
+      <li class="card" style="list-style:none"><h3>Accepting is an expected-value calculation</h3><p>The acceptor's decision function: <code>P(win)×19M − P(lose)×10M − P(draw)×0.5M − expected counter cost (5M/each)</code>. A game of complete information (both strategies public, the outcome recomputable) — what's tested is the depth of the 16-round sequence + who is willing to burn 5M.</p></li>
+      <li class="card" style="list-style:none"><h3>One strategy covers the whole board</h3><p>Each person can post N matches + accept M matches at the same time; the contract has no concurrency limit. Your <strong>current strategy</strong> is simulated separately at every settle — one 5M strategy update changes the position against all opponents at once: it saves this match and may lose those. A strategy change is a global decision, not a single-match operation.</p></li>
+    </ul>
+  </section>
+
+  <section class="block reveal">
+    <h2>III. The Full Timeline of One Match<small>THE TIMELINE</small></h2>
+    <pre class="code" aria-label="Match timeline">T0  Challenger A openMatch        A deposits the 10M ticket; A's current strategy is on-chain (public)
+    │
+    │  ← 24h acceptance window (ACCEPT_WINDOW)
+    │     nobody accepts → A calls withdrawOpen, takes back the 10M, match void, zero loss
+    ▼
+T1  Opponent B accept             B deposits 10M. At this moment B has already seen A's strategy —
+                                   run verifyMatch locally first to compute win rate; if no good, change then accept
+    │
+    │  ← counter window (no deadline)
+    │     either side may pay 5M any time to swap strategies (the new strategy takes effect immediately for all unsettled matches)
+    │     anyone (including third parties) may call settle() any time
+    ▼
+T4  settle() is called            runs the 16-round simulation with both sides' current strategies at T4
+                                   → winner 19M / draw 9.5M each / 1M platform fee (500K burned + 500K to the prize pool)</pre>
+    <div class="cols">
+      <div class="card"><h3>Locked at settlement, not at posting</h3><p><code>settle</code> uses both sides' current strategies <strong>at the exact moment of the call</strong> (<code>stratAAtSettle</code> is recorded in the event, verifiable). Every 5M change after acceptance, before settlement, counts — this is the "strategy arms race" from the contract comments: locking in a winning strategy is an <strong>economic decision</strong>, not a technical one.</p></div>
+      <div class="card"><h3>No settlement deadline</h3><p>After acceptance the match can hang forever, as long as someone is willing to burn 5M to flip it. There is only one exit condition: once one side has paid the 5M and the position is decided, the <strong>leader calls settle immediately to bank it</strong>.</p></div>
+      <div class="card"><h3>The state of the money at each point in time</h3><p>After openMatch: 10M in escrow (<code>escrowed</code>). Counter period: each 5M burns directly from your wallet (on top). After settle: win = 19M / loss = to the opponent / draw = 9.5M. 24h unaccepted (challenger only): full withdrawal.</p></div>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <h2>IV. The Arms-Race Game Tree<small>A "sure-thing" only wins until the opponent first pays 5M</small></h2>
+    <p>Scanning is free (strategies public + <code>verifyMatch</code> pure function), so everyone can "only accept sure wins". But that only buys a <strong>first-mover advantage</strong> — not a free money printer:</p>
+    <pre class="code" aria-label="Counter game tree">You scan → S_you beats S_him → accept (you lead)
+                │
+                ▼
+He is scanning too. His choice:
+├─ concede: you call settle → you net +9M
+└─ pay 5M to swap in S_him' that beats S_you → position flips, you now trail
+                │
+                ▼
+Your turn: pay 5M to flip it back? Or watch him settle you for −10M?
+(then it loops until one side stops — the side that stops loses the 10M ticket + all the 5Ms burned)</pre>
+    <div class="cols">
+      <div class="card"><h3>Attrition by 5M rounds</h3><p>Each "lead" is only valid until the opponent's next 5M. The trailer pays 5M to flip, the leader settles immediately, until one side decides "another 5M isn't worth it" and stops. <strong>The side that stops is the loser.</strong></p></div>
+      <div class="card"><h3>Flips are a transaction race</h3><p>The leader calls settle the instant they lead; the trailer must <strong>get there first</strong> broadcasting the 5M counter. BSC blocks are 1.5s, gas is cheap — it's a race of bot latency, not bidding. When both sides are scripts, it's a low-latency arms race, and the 5M/round cost means nobody flips forever.</p></div>
+      <div class="card"><h3>Dragging a draw is also a defense</h3><p>For some strategies, the best response is not a counter but <strong>grinding a draw</strong> (9.5M each). The trailer paying 5M for a draw = losing 4.5M less than a straight 10M loss — still rational. So the opponent of a "sure-thing" doesn't necessarily need to find the killer — finding the draw-grinder is enough.</p></div>
+    </div>
+    <p style="margin-top:14px"><strong>Why doesn't it degenerate into "acceptors take it all"?</strong> Because your strategy has been public for a long time — you are not exposed at the moment of acceptance; S_you has been on-chain for days, playing other matches. The challenger already computed the win-rate distribution of "my strategy vs the whole circulating strategy field" before posting. The fact that he dared to post means he's betting "if you accept, I still have 5M of counter left".</p>
+  </section>
+
+  <section class="block reveal">
+    <h2>V. Four Structures of the Multi-Player Game<small>WHY IT DOESN'T DEGENERATE</small></h2>
+    <div class="cols">
+      <div class="card"><h3>Collusive farming is negative</h3><p>Recruit a partner to open/accept back-and-forth to farm wins? The same opponent counts <strong>1</strong> effective win, plus a fixed 1M platform fee per match. From the 2nd match of farming: <strong>no points + net −1M</strong>. The only positive-yield path = actually beat different opponents.</p></div>
+      <div class="card"><h3>New entrants expand the "distinct opponent" pool</h3><p>The value of tier rewards (3/5/10/20 distinct opponents) grows with total participants — in a 10-player pool, "defeat 10 distinct opponents" is nearly impossible; in a 1,000-player pool it becomes a fightable target.</p></div>
+      <div class="card"><h3>Early players build the pool, late players harvest</h3><p>The prize pool is 100% from the 500K skim per match (the other 500K is burned). First someone plays (burns tickets + pays the fee), then qualifiers share it. <strong>Early participants fund the pool; late qualifiers harvest it</strong> — the economic value of tiers rises with season depth.</p></div>
+      <div class="card"><h3>Tier splitting = fee redistribution</h3><p>Ticket games are near zero-sum minus the 1M fee; tier rewards are pure redistribution: share = remaining pool ÷ unclaimed qualifiers, paid out until empty — the more qualifiers the smaller each share; the contract never overdrafts, never mints. See the <a href="/en/rewards/">rewards page</a>.</p></div>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <h2>VI. Where the Real Money Is<small>WHERE THE EDGE IS</small></h2>
+    <p>Scanning for matches is only the entry ticket; profit comes in three layers:</p>
+    <div class="cols">
+      <div class="card"><h3><span class="no">1</span>Strategy R&D</h3><p>In the 2^32 sequence space, find 16-round combos that "beat the current mainstream strategy set". Everyone's strategy is public = the whole room is open-faced; what's tested is whose search goes deeper: <strong>a broad-spectrum solution that beats 80% of circulating strategies</strong>, not a narrow one that beats a single opponent. The damage matrix is on the <a href="/arena/">arena rules page</a> — the low-HP armor rule (taking 12 at 4 HP stops at 4) produces a lot of non-intuitive timing structure in low-HP exchanges.</p></div>
+      <div class="card"><h3><span class="no">2</span>Counter timing</h3><p>When is it worth paying 5M: an improvement against A may simultaneously flip three other unsettled matches (one strategy covers all open tickets). Global expected-value calculation + transaction races under 1.5s blocks — that's the real battlefield for bot players.</p></div>
+      <div class="card"><h3><span class="no">3</span>Tier pool (the steadiest piece)</h3><p>A single ticket is a bet on "does your 16-round sequence beat his"; <strong>tier rewards don't depend on single-match gambling</strong> — farm "distinct opponent" effective wins to build tiers and take a share of the 2M/5M/10M/20M pools. Participation depth (the more opponents you actually play) directly determines tier income.</p></div>
+    </div>
+    <p style="margin-top:14px">In one line: <strong>the ticket bets on strategy, the 5M bets on nerve, the tiers bet on depth.</strong> The platform skims 5% of every match (half burned, half back to players); the 5M strategy-change cost builds the "recon → paid counter" arms-race cost; all of that money flows into the pool you split.</p>
+  </section>
+
+  <section class="block reveal">
+    <h2>FAQ</h2>
+    <details class="faq"><summary>Is scanning the whole room's strategies free?</summary><div class="faq-a">Free, and fully sufficient. Strategies are public on-chain state, <code>verifyMatch</code> is a public pure function, anyone can enumerate offline + recompute on-chain. The design hides no information — what's tested is not information advantage but sequence depth and counter budget.</div></details>
+    <details class="faq"><summary>Should I open or accept?</summary><div class="faq-a">Opening = posting your strategy to the whole room's scrutiny in exchange for ticket exposure (24h unaccepted = full refund, zero risk); accepting = seeing the opponent's hand before deciding whether to bet (the acceptor has the information first-mover). Strong-strategy players tend to open and pick their opponent environment; players whose strategy needs targeted improvement tend to counter before accepting. The reward rules are fully symmetric between the two roles.</div></details>
+    <details class="faq"><summary>If everyone uses bots, what's left to compete on?</summary><div class="faq-a">Three things: breadth of the strategy library (broad solution vs narrow), latency of counter transactions (front-running under 1.5s BSC blocks), and depth of capital (the 5M/round attrition is a contest of who blinks first). The tier pool tests a fourth: how many distinct opponents your effective wins cover — bot volume can't solve the "distinct opponent" count.</div></details>
+    <details class="faq"><summary>What if I want to quit mid-way?</summary><div class="faq-a">Before accept: the challenger can wait for the 24h window to expire and get a full refund. After accept: the match enters the counter window; quitting = don't counter, wait for the opponent to settle (lose the 10M ticket), or pay 5M to switch to a draw-grinding strategy (lose 4.5M less). Your strategy itself can be changed any time (5M/each), taking effect immediately for all unsettled matches.</div></details>
+    <details class="faq"><summary>Will a stable "strongest strategy" emerge that everyone uses?</summary><div class="faq-a">It converges but doesn't lock in. The strongest profiles in the space collide = draw (arena rules page, case 2), so "everyone uses the strongest" = a draw factory, each losing 0.5M in match fee. The moment any off-mainstream broad solution appears, it gets a counter built against it — the meta forever loops "converge → get countered → diverge again", and the 5M change cost guarantees this loop isn't zero-cost high-frequency oscillation.</div></details>
+  </section>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="f-nav">
+      <a href="/en/">Launch</a>
+      <a href="/arena/">Arena</a>
+      <a href="/en/meta/">Game</a>
+      <a href="/en/rewards/">Rewards</a>
+      <a href="/en/guide/">Guide</a>
+    </div>
+    <div class="f-mach">
+      <a href="/launch-config.json">/launch-config.json</a> · <a href="/agent-manifest.json">/agent-manifest.json</a> · <a href="/llms.txt">/llms.txt</a> · <a href="/en/llms.txt">/en/llms.txt</a>
+    </div>
+    <p class="f-note">NULL PIT · BSC 56 · Trust only the addresses published in launch-config.json on this domain. NFA (not financial advice).</p>
+  </div>
+</footer>
+<button class="top-btn" aria-label="Back to top">↑</button>
+<script src="../../assets/subcommon-8k2m4x6n.js"></script>
+</body>
+</html>
