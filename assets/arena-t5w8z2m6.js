@@ -4,7 +4,7 @@
  */
 const ARENA = {
   chainId: 56,
-  rpcs: ["https://bsc-dataseed.binance.org", "https://bsc-dataseed1.defibit.io", "https://bsc-rpc.publicnode.com"],
+  rpcs: ["https://bnb-mainnet.g.alchemy.com/v2/alch_O9bJW1dNHocym_WWCbhA8", "https://bnb-mainnet.g.alchemy.com/v2/alch_iW_xGOdHu22A4ST2Kaxx-", "https://bnb-mainnet.g.alchemy.com/v2/alch_lV04sBMyUJIaHPDSILlM7", "https://bnb-mainnet.g.alchemy.com/v2/alch_Jb73rlIjXVdMkqHVk5vf4", "https://bnb-mainnet.g.alchemy.com/v2/alch_b8rGJwM-2xFSuuQwCrJBp", "https://bsc-dataseed.binance.org", "https://bsc-dataseed1.defibit.io", "https://bsc-rpc.publicnode.com"],
   rpc: 0,
   duel: "", // PitDuel 部署后填入; 或发布 /arena-config.json {duel:"0x.."}
 };
