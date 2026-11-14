@@ -4,8 +4,8 @@
   "chainId": "56",
   "configured": true,
   "addresses": {
-    "launch": "0x682B98F503d4599810d36c42b70B1151c4df1296",
-    "token": "0x7dE14e879B6989378EA1D4fED348105ae9c0d152",
+    "launch": "0xfD470B612200d2cA2c9E4f14cE58cA3568679AeA",
+    "token": "0x828d6C6185b3fEA582E8bBF77D55e90443dEc90d",
     "identity": "0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F",
     "router": "0x7A15D3AF05b650ED184751F982fab9bBAb475168",
     "factory": "0x7B098e5fdEf1d8F014113cFe790bf09f34fd793a",

@@ -1,8 +1,9 @@
 {
   "schemaVersion": 1,
   "chainId": "56",
-  "runtimeCodeHash": "91310854db0e3be69318674423a99bf094aee1f84c486417e79632ad17ad5b91",
-  "launch": "0x682B98F503d4599810d36c42b70B1151c4df1296",
+  "runtimeCodeHash": "67d484a2a8ca506caf1822ade1a959c5b301b3572100d316a8fbfbb1642d04d9",
+  "launch": "0xfD470B612200d2cA2c9E4f14cE58cA3568679AeA",
+  "token": "0x828d6C6185b3fEA582E8bBF77D55e90443dEc90d",
   "identity": "0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F",
   "router": "0x7A15D3AF05b650ED184751F982fab9bBAb475168",
   "factory": "0x7B098e5fdEf1d8F014113cFe790bf09f34fd793a",
@@ -11,12 +12,11 @@
   "teamBeneficiary": "0x8fbA6C00a78b125A93286eff527b103336243A6e",
   "opsBeneficiary": "0x9999e932e9Bb7e2bF350d8d6F3C603612Ab892B1",
   "treasury": "0xDc77A5528F85D645A2530964ef704d0B020204d8",
-  "start": "1794656004",
-  "end": "1794915204",
-  "settleDeadline": "1795001604",
+  "start": "1794659136",
+  "end": "1794918336",
+  "settleDeadline": "1795004736",
   "lotPriceWei": "3000000000000000",
   "totalLots": "10000",
   "walletCap": "20",
-  "agentCap": "20",
-  "token": "0x7dE14e879B6989378EA1D4fED348105ae9c0d152"
+  "agentCap": "20"
 }
