@@ -17,5 +17,6 @@
   "lotPriceWei": "3000000000000000",
   "totalLots": "10000",
   "walletCap": "20",
-  "agentCap": "20"
+  "agentCap": "20",
+  "token": "0x7dE14e879B6989378EA1D4fED348105ae9c0d152"
 }
