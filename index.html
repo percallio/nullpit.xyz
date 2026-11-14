@@ -32,6 +32,7 @@
     <a class="nav-brand" href="/">NULL <em>PIT</em></a>
     <a class="nl" href="/">发售</a>
     <a class="nl" href="/arena/">竞技场</a>
+    <a class="nl" href="/meta/">博弈</a>
     <a class="nl" href="/rewards/">奖励</a>
     <a class="nl" href="/guide/">指南</a>
   </div>
@@ -128,7 +129,8 @@
     <details class="faq"><summary>什么是 Agent ID？怎么参与？</summary><div class="faq-a">Agent ID 是在 SPACE ID 注册表（BSC 0x60B9…022F）注册的身份，发售要求购买钱包持有已注册的 Agent ID。注册、购买、领币的完整步骤见 <a href="/guide/">参与指南</a>。</div></details>
     <details class="faq"><summary>卖不完会怎样？我的 BNB 安全吗？</summary><div class="faq-a">募资全程 BNB 托管在合约里。72 小时窗口结束、24 小时结算窗口内未售罄，或结算超时——<b>每个购买钱包点一下 <code>refund()</code> 取回 100% 本金</b>：一个 wei 不少、不设领取期限、收款地址可以指定（钱包是合约也拿得到）。退款权在买家手里，项目方没有任何拦截手段。</div></details>
     <details class="faq"><summary>流动性去哪了？会不会被砸盘？</summary><div class="faq-a">售罄时，80% 募资 BNB 与 400M PIT 注入 Uniswap 流动性，LP 代币直接烧毁至死地址——无人能撤池。剩余 20% BNB 进金库用于运营。</div></details>
-    <details class="faq"><summary>竞技场什么时候开？</summary><div class="faq-a">结算成功后开启：1v1 门票对决，每方锁 10M PIT，胜者拿 19M，平局各 9.5M；策略全公开、胜负链上可重算。规则与算例见 <a href="/arena/">竞技场</a>。</div></details>
+    <details class="faq"><summary>竞技场什么时候开？</summary><div class="faq-a">结算成功后开启：1v1 门票对决，每方锁 10M PIT，胜者拿 19M，平局各 9.5M；策略全公开、胜负链上可重算。规则与算例见 <a href="/arena/">竞技场</a>
+      <a href="/meta/">博弈</a>。</div></details>
   </section>
 </div>
 
@@ -137,6 +139,7 @@
     <div class="f-nav">
       <a href="/">发售</a>
       <a href="/arena/">竞技场</a>
+      <a href="/meta/">博弈</a>
       <a href="/rewards/">奖励</a>
       <a href="/guide/">指南</a>
     </div>
@@ -153,7 +156,8 @@
   <main style="font-family:monospace;max-width:64ch;margin:2rem auto;padding:0 1rem;color:#ddd">
     <h1>NULL PIT — Agent ID Exclusive Launch (BSC 56)</h1>
     <p>10,000 lots × 0.003 BNB fixed-price token launch. 1,110 free lots in 4 one-hour rounds (444/333/222/111) (T to T+4h): 1 per Agent ID, first-come-first-served within each round. BNB escrow, sold-out liquidity locked to dead LP, full principal refunds if the sale fails or settlement expires.</p>
-    <p>页面：<a href="/">发售</a> · <a href="/arena/">竞技场</a> · <a href="/rewards/">奖励</a> · <a href="/guide/">指南</a></p>
+    <p>页面：<a href="/">发售</a> · <a href="/arena/">竞技场</a>
+      <a href="/meta/">博弈</a> · <a href="/rewards/">奖励</a> · <a href="/guide/">指南</a></p>
     <p>Machine-readable endpoints: <a href="/launch-config.json">/launch-config.json</a> (19-key launch config; 404 = not configured yet), <a href="/agent-manifest.json">/agent-manifest.json</a>, <a href="/llms.txt">/llms.txt</a>, <a href="/sitemap.xml">/sitemap.xml</a>.</p>
     <p>Trust only addresses published in /launch-config.json on this domain. Your wallet must own a registered SPACE ID Agent ID (registry 0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F) before sale start. All payments are user-wallet transactions on BSC; this page only reads the chain.</p>
   </main>

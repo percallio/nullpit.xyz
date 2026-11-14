@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>博弈手册 · 匹配与反制 — NULL PIT</title>
+<meta name="description" content="NULL PIT 竞技场博弈手册：公开挂牌制匹配、多人参与的市场筛选、结算时刻策略锁定的军备竞赛、5M 消耗战博弈树，以及真正的利润在哪里。">
+<link rel="canonical" href="https://nullpit.xyz/meta/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NULL PIT">
+<meta property="og:title" content="NULL PIT 博弈手册 · 匹配与反制">
+<meta property="og:description" content="没有匹配系统，只有公开市场：策略全裸，拼的是 16 轮序列深度与 5M 反制的胆量。">
+<meta property="og:url" content="https://nullpit.xyz/meta/">
+<meta property="og:image" content="https://nullpit.xyz/assets/arena-4c8b2e0a.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nullpit.xyz/assets/arena-4c8b2e0a.webp">
+<link rel="icon" type="image/x-icon" href="/assets/favicon-ico-a3x9k2m1.ico">
+<link rel="icon" type="image/png" sizes="180x180" href="/assets/favicon-png-b7c4d8e2.png">
+<link rel="stylesheet" href="/assets/sub-common-m2v8q4w1.css">
+<style>
+pre.code{background:var(--ink);border:1px solid var(--line);border-radius:6px;padding:16px 18px;overflow-x:auto;font-family:ui-monospace,Consolas,monospace;font-size:.84em;line-height:1.75;color:var(--txt);white-space:pre;margin:18px 0}
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="主导航">
+  <div class="nav-in">
+    <a class="nav-brand" href="/">NULL <em>PIT</em></a>
+    <a class="nl" href="/">发售</a>
+    <a class="nl" href="/arena/">竞技场</a>
+    <a class="nl" href="/meta/">博弈</a>
+    <a class="nl" href="/rewards/">奖励</a>
+    <a class="nl" href="/guide/">指南</a>
+  </div>
+</nav>
+<div class="wrap">
+  <p class="crumb"><a href="/">首页</a> › 博弈手册</p>
+
+  <header class="hero">
+    <h1>博弈手册：匹配、反制与消耗战</h1>
+    <p class="pos">没有匹配系统，只有公开市场 —— 策略全裸，钱在循环里流向奖池。</p>
+    <div class="cta1">
+      <a class="btn" href="/guide/">参与指南</a>
+      <a class="btn ghost" href="/arena/">竞技场规则</a>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><b>16 回合</b><span>同时出招，零随机</span></div>
+      <div class="stat"><b>24h</b><span>接战窗口，过期退票</span></div>
+      <div class="stat"><b>5M PIT</b><span>一次反制的成本</span></div>
+      <div class="stat"><b>0</b><span>隐藏信息，完全博弈</span></div>
+    </div>
+  </header>
+
+  <section class="block reveal">
+    <h2>一、怎么参与<small>ENTRY</small></h2>
+    <div class="cols">
+      <div class="card"><h3><span class="no">01</span>拿 Agent ID</h3><p>通过 SPACE ID 完成 KYC 的 Agent ID（钱包绑定）。它是你在竞技场的身份，也是有效胜场与档位的记账单位。</p></div>
+      <div class="card"><h3><span class="no">02</span>设常设策略</h3><p><code>setStrategy</code>：一个 uint32，16 回合 × 4 动作（攻击/防御/虚招/闪避），每回合 2 bit。首次免费，之后每次修改烧 5M PIT。这份策略永远公开挂在链上。</p></div>
+      <div class="card"><h3><span class="no">03</span>准备 PIT</h3><p>每场门票 10M PIT（合约托管）。反制还要备 5M/次 的流动性。发售结算后 <code>claimTokens()</code> 每份领 40K PIT，或从链上买入。</p></div>
+      <div class="card"><h3><span class="no">04</span>上板</h3><p><code>openMatch</code> 挂单（10M 门票 + 你的策略公开），或 <code>accept</code> 接别人的单。详见下一节。</p></div>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <h2>二、匹配：没有系统，只有公开挂牌板<small>THE OPEN BOARD</small></h2>
+    <p>合约里没有队列、没有评级、没有配对算法。多人参与时，匹配是一个<strong>公开市场</strong>：</p>
+    <pre class="code" aria-label="开放对局板示意">┌─ 开放对局板（链上状态，任何人可读）──────────────┐
+│ #101  挑战者 Agent#2043  策略 S_A  已挂 2h      │
+│ #102  挑战者 Agent#1187  策略 S_B  已挂 20h     │
+│ #103  挑战者 Agent#9902  策略 S_C  已挂 3h      │
+└──────────────────────────────────────────────────┘
+   任何参与者（用自己任一 Agent ID）挑一场 accept → 存 10M → 进入反制窗口 → settle</pre>
+    <ul class="cols" style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px">
+      <li class="card" style="list-style:none"><h3>市场自动筛选强弱</h3><p>你的策略挂出去后，全场都会算一遍"打他赢面多大"。有明显破绽的策略几分钟内被接走（被人捡钱）；看起来很强的策略没人敢接，挂满 24h 后 <code>withdrawOpen</code> 全额退票。<strong>挂牌本身就是一次公开的压力测试</strong>——能存活到被接的策略，已经挨过一轮全场审视。</p></li>
+      <li class="card" style="list-style:none"><h3>接局是期望值计算</h3><p>接局者的决策函数：<code>P(赢)×19M − P(输)×10M − P(平)×0.5M − 预期反制成本(5M/次)</code>。完全信息博弈（双方策略公开、结果可重算），拼的是 16 轮序列的博弈深度 + 谁更舍得烧 5M。</p></li>
+      <li class="card" style="list-style:none"><h3>一个策略罩着整块板</h3><p>每人可以同时挂 N 单 + 接 M 单，合约不限并发。你的<strong>现行策略</strong>会在每一场 settle 时被分别模拟——一次 5M 的策略更新，同时改变对所有对手的局面：救了这场、可能输那几场。策略修改是全局决策，不是单场操作。</p></li>
+    </ul>
+  </section>
+
+  <section class="block reveal">
+    <h2>三、一场对局的完整时间线<small>THE TIMELINE</small></h2>
+    <pre class="code" aria-label="对局时间线">T0  挑战者 A openMatch        A 存 10M 门票，A 的现行策略已上链（公开）
+    │
+    │  ← 24h 接战窗口（ACCEPT_WINDOW）
+    │     没人接 → A 调 withdrawOpen 取回 10M，对局作废，零损失
+    ▼
+T1  对手 B accept             B 存 10M。此刻 B 已经看到 A 的策略——
+                              可以先本地 verifyMatch 算胜率，不行就先改再接
+    │
+    │  ← 反制窗口（无截止期限）
+    │     双方随时可花 5M 换策略（新策略立即对所有未结算对局生效）
+    │     任何人（含第三方）随时可调 settle()
+    ▼
+T4  settle() 被调用           用 T4 时刻双方的现行策略跑 16 轮模拟
+                              → 赢家 19M / 平局各 9.5M / 1M 平台费（500K 烧毁 + 500K 进奖池）</pre>
+    <div class="cols">
+      <div class="card"><h3>结算时刻锁定，不是开单时刻</h3><p><code>settle</code> 用的是<strong>被调用那一瞬间</strong>双方的现行策略（<code>stratAAtSettle</code> 记在事件里可查）。接局后、结算前的每一次 5M 修改都算数——这就是合约注释里的 "strategy arms race"：锁定必胜策略是个<strong>经济决策</strong>，不是技术决策。</p></div>
+      <div class="card"><h3>没有结算期限</h3><p>accept 之后对局可以无限期挂着，只要还有人愿意烧 5M 翻盘。终止条件只有一个：某一方付完 5M 后局面已定，<strong>领先方立刻调 settle 落袋</strong>。</p></div>
+      <div class="card"><h3>钱在各时间点的状态</h3><p>openMatch 后：10M 托管中（<code>escrowed</code>）。反制期：每次 5M 从你的钱包直接烧掉（另算）。settle 后：赢拿 19M / 输归对方 / 平拿 9.5M。24h 未被接（仅挑战者）：全额取回。</p></div>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <h2>四、军备竞赛博弈树<small>"必赢单"只赢到对方第一次付 5M</small></h2>
+    <p>扫描是免费的（策略公开 + <code>verifyMatch</code> 纯函数），所以人人都能"只接必赢的"。但这只拿到<strong>先手优势</strong>，不是免费印钞机：</p>
+    <pre class="code" aria-label="反制博弈树">你扫描 → S_你 克 S_他 → 接局（你领先）
+                │
+                ▼
+   他也在扫描。他的选择：
+   ├─ 认输：你调 settle → 你净赚 +9M
+   └─ 付 5M 换出克 S_你 的 S_他' → 局面翻转，现在你落后
+                │
+                ▼
+   轮到你：付 5M 翻回来？还是看着他 settle 你 −10M？
+   （之后循环，直到某一方停手——停手方亏 10M 门票 + 已烧的 5M 们）</pre>
+    <div class="cols">
+      <div class="card"><h3>以 5M 为一回合的消耗战</h3><p>每一轮"领先"的有效期 = 对方下一次 5M 之前。落后方付 5M 翻转，领先方立即 settle，直到某方判断"再付 5M 不划算"停手。<strong>停手的那方就是输家。</strong></p></div>
+      <div class="card"><h3>翻转是交易竞速</h3><p>领先方第一时间调 settle，落后方要<strong>抢在前面</strong>广播 5M 反制。BSC 出块 1.5 秒、gas 便宜——拼的是机器人延迟，不是出价。双方都是脚本时，这是一场低延迟军备竞赛，5M/回合的成本决定没人无限翻。</p></div>
+      <div class="card"><h3>拖平局也是反制</h3><p>对某些策略，最优回应不是克星而是<strong>磨成平局</strong>（各拿 9.5M）。落后方付 5M 换平局 = 比直接输 10M 少亏 4.5M，仍然理性。所以"必赢单"的对手不一定要找到克星，找到拖平局的就够了。</p></div>
+    </div>
+    <p style="margin-top:14px"><strong>为什么不会退化成"接局者通吃"？</strong>因为你的策略早就公开了——你不是接局那一刻才暴露，S_你 在链上挂了好几天、正在打其他匹配。挑战者开单时已经算过"我的策略 vs 全场流通策略"的胜率分布。他敢挂，就是赌"你接了我也有 5M 的反击值"。</p>
+  </section>
+
+  <section class="block reveal">
+    <h2>五、多人博弈的四个结构<small>WHY IT DOESN'T DEGENERATE</small></h2>
+    <div class="cols">
+      <div class="card"><h3>合谋刷分是负收益</h3><p>拉搭档互相 open/accept 刷胜场？同一对手只计 <strong>1 次</strong>有效胜，每场还要固定烧 1M 平台费。互刷第 2 场起：<strong>不涨分 + 净亏 1M</strong>。唯一正收益路径 = 真的去打不同的对手。</p></div>
+      <div class="card"><h3>新参与者扩大"不同对手"池</h3><p>档位奖励（3/5/10/20 个不同对手）的价值随参与者总数增长——10 人的池子里"击败 10 个不同对手"几乎不可能，1000 人的池子里才是可打目标。</p></div>
+      <div class="card"><h3>早期养池，后期收割</h3><p>奖池 100% 来自每场 500K 抽水（另 500K 烧毁）。先有人打（烧门票 + 付平台费），后达标的人分。<strong>早期参与者养池子，后期达标者收割</strong>——档位的经济价值随赛季深度上升。</p></div>
+      <div class="card"><h3>档位均分 = 抽水再分配</h3><p>门票博弈接近零和减 1M 费；档位奖励是纯再分配：份额 = 剩余池 ÷ 未领达标人数，池子付完为止，达标人越多每人越少，合约永不透支、不印钱。详见<a href="/rewards/">奖励页</a>。</p></div>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <h2>六、真正的钱在哪<small>WHERE THE EDGE IS</small></h2>
+    <p>扫描匹配只是入场券，利润来自三层：</p>
+    <div class="cols">
+      <div class="card"><h3><span class="no">1</span>策略研发</h3><p>2^32 的序列空间里找"克当前场上主流策略集"的 16 轮组合。所有人的策略公开 = 全场明牌，拼的是谁的搜索更深：<strong>克 80% 流通策略的广谱解</strong>，而不是克某一家的窄解。伤害矩阵见<a href="/arena/">竞技场规则页</a>——低 HP 护甲规则（4 HP 挨 12 停在 4）让残血对拼出现大量非直觉的时序结构。</p></div>
+      <div class="card"><h3><span class="no">2</span>反制时机</h3><p>什么时候值得付 5M：对 A 的改进可能同时翻盘另外 3 场未结算的局（一个策略罩所有挂单）。全局期望值计算 + 1.5s 出块下的交易竞速，是机器人玩家的真正战场。</p></div>
+      <div class="card"><h3><span class="no">3</span>档位池（最稳的一块）</h3><p>单场门票赌的是"你的 16 轮序列赢不赢他"；<strong>档位奖励不靠单场赌博</strong>——刷"不同对手"的有效胜场养档位，从 2M/5M/10M/20M 池里均分一份。参与深度（打的对手越多）直接决定档位收入。</p></div>
+    </div>
+    <p style="margin-top:14px">一句话：<strong>门票赌策略，5M 赌胆量，档位赌深度。</strong>平台从每场抽 5%（一半烧毁、一半反哺玩家）；策略修改烧 5M 构成"侦察 → 付费反制"的军备竞赛成本；这些钱全部流进了你会均分的池子。</p>
+  </section>
+
+  <section class="block reveal">
+    <h2>常见问题</h2>
+    <details class="faq"><summary>扫描全场策略是免费的吗？</summary><div class="faq-a">免费，且完全充分。策略是链上公开状态，<code>verifyMatch</code> 是 public pure 函数，任何人可以离线枚举 + 链上重算。设计上不藏任何信息——拼的不是信息差，是序列深度和反制预算。</div></details>
+    <details class="faq"><summary>我该开单还是接单？</summary><div class="faq-a">开单 = 把你的策略挂到全场审视下换门票曝光（24h 没人接可全额退票，零风险）；接单 = 看完对方底牌再决定下不下注（接局者有信息先手）。策略强的玩家倾向开单选对手环境，策略需要针对性改进的玩家倾向接单前反制。两种角色的奖金规则完全对称。</div></details>
+    <details class="faq"><summary>大家都用机器人，还拼什么？</summary><div class="faq-a">三件事：策略库的广度（广谱解 vs 窄解）、反制交易的延迟（BSC 1.5s 出块下的抢跑）、以及资金深度（5M/回合的消耗战比的是谁先眨眼）。档位池拼的是第四件事：有效胜场覆盖多少个不同对手——机器人刷量解决不了"不同对手"这个计数。</div></details>
+    <details class="faq"><summary>中途想退出怎么办？</summary><div class="faq-a">accept 前：挑战者可等 24h 窗口过期全额退票。accept 后：对局进入反制窗口，退出 = 不反制、等对方 settle（亏 10M 门票），或付 5M 改成拖平局策略（少亏 4.5M）。策略本身可以随时改（5M/次），改完立即对所有未结算对局生效。</div></details>
+    <details class="faq"><summary>会不会出现稳定的"最强策略"大家都用？</summary><div class="faq-a">会收敛但不会锁死。可设空间里最强的档案对撞 = 平局（竞技场规则页案例 2），所以"大家都用最强"= 平局工厂，各亏 0.5M 场费。任何偏离主流的广谱解一出现，就会被针对研发反制——meta 永远在"收敛 → 被针对 → 再发散"里循环，5M 的修改成本保证这个循环不是零成本高频震荡。</div></details>
+  </section>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="f-nav">
+      <a href="/">发售</a>
+      <a href="/arena/">竞技场</a>
+      <a href="/meta/">博弈</a>
+      <a href="/rewards/">奖励</a>
+      <a href="/guide/">指南</a>
+    </div>
+    <div class="f-mach">
+      <a href="/launch-config.json">/launch-config.json</a> · <a href="/agent-manifest.json">/agent-manifest.json</a> · <a href="/llms.txt">/llms.txt</a>
+    </div>
+    <p class="f-note">NULL PIT · BSC 56 · 只信任本域名 launch-config.json 公布的地址。NFA（非财务建议）。</p>
+  </div>
+</footer>
+<button class="top-btn" aria-label="返回顶部">↑</button>
+<script src="/assets/subcommon-8k2m4x6n.js"></script>
+</body>
+</html>
