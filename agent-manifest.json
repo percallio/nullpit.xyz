@@ -4,14 +4,14 @@
   "chainId": "56",
   "configured": true,
   "addresses": {
-    "launch": "0x3BdF49C733aA6e1E9c1d7Bb6849f369b2BFB5274",
-    "identity": "0x8e5cECb494e564954c86bdAe5Ff19A5Bd933bA09",
-    "router": "0x9f6aF0f54dCe9Bd9426FB6454Cb3Ab3E48258Bc9",
-    "factory": "0x17b03e859AdDFC12464180668fbcdA2F9862328b",
-    "wrappedNative": "0xfedaf1c2F16007951A98b527275986f95bA71459",
+    "launch": "0x2f0D710A3DbE899B7FC2A260C541Bf941434639c",
+    "identity": "0x8a80958Dad6A9d3c11CA2EAC131438334F3D61F7",
+    "router": "0x682B98F503d4599810d36c42b70B1151c4df1296",
+    "factory": "0x7A15D3AF05b650ED184751F982fab9bBAb475168",
+    "wrappedNative": "0x7B098e5fdEf1d8F014113cFe790bf09f34fd793a",
     "communityVault": "0x39a1cB7D9C04c2466c24b011E4c6d92a274Fe222",
     "teamBeneficiary": "0x8fbA6C00a78b125A93286eff527b103336243A6e",
-    "opsBeneficiary": "0x07d4c4e5C5f48f1bB1f1cA8818239f46B5166d30",
+    "opsBeneficiary": "0x9999e932e9Bb7e2bF350d8d6F3C603612Ab892B1",
     "treasury": "0xDc77A5528F85D645A2530964ef704d0B020204d8"
   },
   "methods": [
