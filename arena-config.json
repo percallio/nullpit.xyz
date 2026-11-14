@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "chainId": "56",
-  "duel": "0x943917dec401D5994a3F1e52f7c31b54A2356A81",
-  "badge": "0xA1f4D4B4936f13E691BD1C243C16A25b98cAddA3",
+  "duel": "0x1843eef6f72cdb02e77e5739ea8f88e01095Ed02",
+  "badge": "0x41c143fcAc98910115a2b23485EE91D8F4C8942A",
   "minWins": 10,
-  "deployedAt": "2026-11-14T07:40:10.366115+00:00"
+  "deployedAt": "2026-11-14T09:39:51.955102+00:00"
 }
