@@ -1,0 +1,20 @@
+/* NULL PIT 首页专用增量 — 游戏屏外壳 + 入口卡片 (基础设计系统复用 sub-common-*.css) */
+/* 游戏 CSS 把 html/body 锁成 overflow:hidden;height:100% — 首页要滚动 */
+html{overflow:auto !important;height:auto !important;min-height:100%}
+body{overflow:auto !important;height:auto !important;min-height:100%}
+#app{height:100vh !important}
+
+/* 游戏屏: 整屏沉浸式 section, 与页面色带分隔 */
+.game-sec{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#0d0e14}
+
+/* 入口卡片: 上图下文, hover 抬起 */
+.card.entry{display:flex;flex-direction:column;padding:0;overflow:hidden;text-decoration:none;color:inherit}
+.card.entry:hover{text-decoration:none;transform:translateY(-3px);border-color:var(--acid-dark);transition:transform .2s,border-color .2s}
+.card.entry figure{margin:0;border-bottom:1px solid var(--line)}
+.card.entry figure img{width:100%;height:auto;display:block;border:0;border-radius:0}
+.card.entry .tx{display:flex;flex-direction:column;flex:1;padding:16px 18px 18px}
+.card.entry h3{font-size:1.15em;color:var(--paper);margin-bottom:6px}
+.card.entry h3 .no{color:var(--acid);margin-right:8px;font-variant-numeric:tabular-nums}
+.card.entry p{color:var(--dust);font-size:.92em;line-height:1.7;flex:1}
+.card.entry .go{color:var(--acid);font-weight:700;font-size:.9em;margin-top:10px}
+.card.entry:hover .go{text-decoration:underline}

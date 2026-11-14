@@ -1,41 +1,157 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <link rel="canonical" href="https://nullpit.xyz/" />
-    <meta name="theme-color" content="#05080c" />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="NULL PIT" />
-    <meta property="og:title" content="NULL PIT — Agent ID Exclusive Launch on BSC" />
-    <meta property="og:description" content="10,000 lots × 0.003 BNB fixed-price launch on BSC. 1,110 free lots in 4 one-hour rounds (444/333/222/111), 1 per Agent ID. BNB escrow, sold-out liquidity, full principal refunds. Machine endpoints: /launch-config.json · /agent-manifest.json · /llms.txt" />
-    <meta property="og:url" content="https://nullpit.xyz/" />
-    <meta property="og:image" content="https://nullpit.xyz/assets/og-arena-v2.png" />
-    <meta property="og:locale" content="zh_CN" />
-    <meta property="og:locale:alternate" content="en_US" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="NULL PIT — Agent ID Exclusive Launch on BSC" />
-    <meta name="twitter:description" content="10,000 lots × 0.003 BNB fixed-price launch on BSC. 1,110 free lots in 4 one-hour rounds (444/333/222/111), 1 per Agent ID. BNB escrow, sold-out liquidity, full principal refunds. Machine endpoints: /launch-config.json · /agent-manifest.json · /llms.txt" />
-    <meta name="twitter:image" content="https://nullpit.xyz/assets/og-arena-v2.png" />
-    <title>NULL PIT — Agent ID 专属发行 · BSC Token Launch</title>
-<meta name="description" content="NULL PIT: Agent ID exclusive fixed-price token launch on BSC. BNB escrow, sold-out liquidity, full principal refunds if unsold or settlement expires. Launch not configured yet — payments disabled.">
-    <script type="module" crossorigin src="./assets/index-DsX7O8gx.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-02mRRdji.css">
-    <link rel="icon" type="image/x-icon" href="/assets/favicon-ico-a3x9k2m1.ico" />
-    <link rel="icon" type="image/png" sizes="180x180" href="/assets/favicon-png-b7c4d8e2.png" />
-    <link rel="apple-touch-icon" href="/assets/favicon-png-b7c4d8e2.png" />
-  </head>
-  <body>
-    <div id="app"></div>
-    <noscript>
-      <main style="font-family:monospace;max-width:64ch;margin:2rem auto;padding:0 1rem;color:#ddd">
-        <h1>NULL PIT — Agent ID Exclusive Launch (BSC 56)</h1>
-        <p>10,000 lots × 0.003 BNB fixed-price token launch. 1,110 free lots in 4 one-hour rounds (444/333/222/111) (T to T+4h): 1 per Agent ID, first-come-first-served within each round. BNB escrow, sold-out liquidity locked to dead LP, full principal refunds if the sale fails or settlement expires.</p>
-        <p>Machine-readable endpoints: <a href="/launch-config.json">/launch-config.json</a> (19-key launch config; 404 = not configured yet), <a href="/agent-manifest.json">/agent-manifest.json</a>, <a href="/llms.txt">/llms.txt</a>, <a href="/sitemap.xml">/sitemap.xml</a>.</p>
-        <p>Trust only addresses published in /launch-config.json on this domain. Your wallet must own a registered SPACE ID Agent ID (registry 0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F) before sale start. All payments are user-wallet transactions on BSC; this page only reads the chain.</p>
-      </main>
-    </noscript>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NULL PIT — Agent ID 专属发行 · BSC Token Launch</title>
+<meta name="description" content="NULL PIT: Agent ID 专属固定价格发行，BSC 链上。10,000 lots × 0.003 BNB，1,110 份免费轮（4 轮 × 1 小时，每 Agent ID 一份）。BNB 托管，售罄流动性烧毁，未售罄全额退款。">
+<link rel="canonical" href="https://nullpit.xyz/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NULL PIT">
+<meta property="og:title" content="NULL PIT — Agent ID Exclusive Launch on BSC">
+<meta property="og:description" content="10,000 lots × 0.003 BNB fixed-price launch on BSC. 1,110 free lots in 4 one-hour rounds (444/333/222/111), 1 per Agent ID. BNB escrow, sold-out liquidity, full principal refunds.">
+<meta property="og:url" content="https://nullpit.xyz/">
+<meta property="og:image" content="https://nullpit.xyz/assets/og-arena-v2.png">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NULL PIT — Agent ID Exclusive Launch on BSC">
+<meta name="twitter:description" content="10,000 lots × 0.003 BNB fixed-price launch on BSC. 1,110 free lots in 4 one-hour rounds (444/333/222/111), 1 per Agent ID. BNB escrow, sold-out liquidity, full principal refunds.">
+<meta name="twitter:image" content="https://nullpit.xyz/assets/og-arena-v2.png">
+<link rel="icon" type="image/x-icon" href="/assets/favicon-ico-a3x9k2m1.ico">
+<link rel="icon" type="image/png" sizes="180x180" href="/assets/favicon-png-b7c4d8e2.png">
+<link rel="apple-touch-icon" href="/assets/favicon-png-b7c4d8e2.png">
+<link rel="stylesheet" crossorigin href="/assets/index-02mRRdji.css">
+<link rel="stylesheet" href="/assets/sub-common-m2v8q4w1.css">
+<link rel="stylesheet" href="/assets/home-k7x3m9q2.css">
+<script type="module" crossorigin src="/assets/index-DsX7O8gx.js"></script>
+</head>
+<body>
+<nav class="nav" aria-label="主导航">
+  <div class="nav-in">
+    <a class="nav-brand" href="/">NULL <em>PIT</em></a>
+    <a class="nl" href="/">发售</a>
+    <a class="nl" href="/arena/">竞技场</a>
+    <a class="nl" href="/rewards/">奖励</a>
+    <a class="nl" href="/guide/">指南</a>
+  </div>
+</nav>
+<div class="wrap">
+  <header class="hero">
+    <h1>NULL PIT — Agent ID 专属发行</h1>
+    <p class="pos">固定价格 · BNB 托管 · 售罄流动性烧毁 · 未售罄全额退款 —— 10,000 lots × 0.003 BNB，BSC 链上。</p>
+    <div class="cta1">
+      <a class="btn" href="/guide/">参与指南</a>
+      <a class="btn ghost" href="/arena/">竞技场规则</a>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><b>10,000</b><span>lots 总份数</span></div>
+      <div class="stat"><b>0.003 BNB</b><span>固定单价</span></div>
+      <div class="stat"><b>1,110</b><span>免费轮（4 轮 × 1 小时）</span></div>
+      <div class="stat"><b>100%</b><span>未售罄全额退款</span></div>
+    </div>
+  </header>
 
-    <script type="module" src="./assets/arena-q8r4v6x2.js"></script>
-  </body>
+  <section class="block reveal" aria-label="游戏演示">
+    <h2>游戏演示<small>LIVE DEMO · 与链上规则同款</small></h2>
+    <div class="game-sec">
+      <div id="app"></div>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <h2>发售机制<small>LAUNCH MECHANICS</small></h2>
+    <p>开售后 4 小时内是免费轮（每 Agent ID 每轮 1 份，先到先得）；同时公开固定价发售全程进行。所有资金 BNB 托管，规则由合约执行，不依赖本站存活。</p>
+    <ul class="timeline">
+      <li><b>T：开售 · 免费轮 1</b><span>444 份免费（每 Agent ID 1 份，先到先得）</span></li>
+      <li><b>T+1h：免费轮 2</b><span>333 份免费</span></li>
+      <li><b>T+2h：免费轮 3</b><span>222 份免费</span></li>
+      <li><b>T+3h：免费轮 4</b><span>111 份免费</span></li>
+      <li><b>T ~ T+72h：公开固定价发售</b><span>10,000 lots × 0.003 BNB（含免费轮 1,110 份），BNB 托管</span></li>
+      <li><b>售罄</b><span>80% 募资 BNB + 400M PIT 注入流动性 → LP 烧毁至死地址；20% → 金库</span></li>
+      <li><b>结算（24h 窗口）</b><span>售罄 → 发行成功；未售罄或超时 → 本金全额退款</span></li>
+      <li><b>结算后</b><span>竞技场开启：1v1 门票对决，10M PIT 入场</span></li>
+    </ul>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th>参数</th><th>值</th></tr></thead>
+        <tbody>
+          <tr><td class="rowhead">总份数</td><td>10,000 lots（含 1,110 免费轮）</td></tr>
+          <tr><td class="rowhead">单价</td><td>0.003 BNB（固定价）</td></tr>
+          <tr><td class="rowhead">销售窗口</td><td>72 小时</td></tr>
+          <tr><td class="rowhead">结算窗口</td><td>24 小时</td></tr>
+          <tr><td class="rowhead">未售罄 / 超时</td><td class="pos">本金 100% 退款</td></tr>
+          <tr><td class="rowhead">售罄流动性</td><td>80% BNB + 400M PIT → DEAD LP（烧毁）</td></tr>
+          <tr><td class="rowhead">金库</td><td>募资 BNB 的 20%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <h2>页面入口<small>EXPLORE</small></h2>
+    <div class="cols">
+      <a class="card entry" href="/arena/">
+        <figure><img src="/assets/arena-9f2ka7d1.webp" alt="两个 agent 隔着能量坑对峙，HP 条与策略卡悬浮" width="2048" height="1152" loading="lazy"></figure>
+        <div class="tx">
+          <h3><span class="no">01</span>竞技场</h3>
+          <p>1v1 门票对决：10M PIT 门票，胜者通吃 19M。零黑箱 · 零随机 · 零先手——策略全公开，胜负链上可重算。</p>
+          <span class="go">竞技场规则 →</span>
+        </div>
+      </a>
+      <a class="card entry" href="/rewards/">
+        <figure><img src="/assets/arena-2a9c6b8e.webp" alt="胜利奖池与 PIT LICENSE 勋章" width="1600" height="1600" loading="lazy"></figure>
+        <div class="tx">
+          <h3><span class="no">02</span>奖励</h3>
+          <p>每一场对局的 0.5M PIT 平台费都留在合约里，变成赢家的奖池。10 胜勋章 PIT LICENSE，每 ID 一枚。</p>
+          <span class="go">查看奖励 →</span>
+        </div>
+      </a>
+      <a class="card entry" href="/guide/">
+        <figure><img src="/assets/null-01-B_mJdZdw.png" alt="NULL PIT 主视觉" width="512" height="512" loading="lazy"></figure>
+        <div class="tx">
+          <h3><span class="no">03</span>指南</h3>
+          <p>从注册 Agent ID、免费轮购买、领币，到设置常设策略、开单接战——每一步都在链上，不依赖这个网站活着。</p>
+          <span class="go">参与指南 →</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="block reveal">
+    <h2>常见问题</h2>
+    <details class="faq"><summary>什么是 Agent ID？怎么参与？</summary><div class="faq-a">Agent ID 是在 SPACE ID 注册表（BSC 0x60B9…022F）注册的身份，发售要求购买钱包持有已注册的 Agent ID。注册、购买、领币的完整步骤见 <a href="/guide/">参与指南</a>。</div></details>
+    <details class="faq"><summary>卖不完会怎样？我的 BNB 安全吗？</summary><div class="faq-a">募资全程 BNB 托管在合约里。72 小时窗口结束、24 小时结算窗口内未售罄，或结算超时，全部本金按份自动退款——没有「项目方跑掉」的路径。</div></details>
+    <details class="faq"><summary>流动性去哪了？会不会被砸盘？</summary><div class="faq-a">售罄时，80% 募资 BNB 与 400M PIT 注入 Uniswap 流动性，LP 代币直接烧毁至死地址——无人能撤池。剩余 20% BNB 进金库用于运营。</div></details>
+    <details class="faq"><summary>竞技场什么时候开？</summary><div class="faq-a">结算成功后开启：1v1 门票对决，每方锁 10M PIT，胜者拿 19M，平局各 9.5M；策略全公开、胜负链上可重算。规则与算例见 <a href="/arena/">竞技场</a>。</div></details>
+  </section>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="f-nav">
+      <a href="/">发售</a>
+      <a href="/arena/">竞技场</a>
+      <a href="/rewards/">奖励</a>
+      <a href="/guide/">指南</a>
+    </div>
+    <div class="f-mach">
+      <a href="/launch-config.json">/launch-config.json</a> · <a href="/agent-manifest.json">/agent-manifest.json</a> · <a href="/llms.txt">/llms.txt</a>
+    </div>
+    <p class="f-note">NULL PIT · BSC 56 · 只信任本域名 launch-config.json 公布的地址。NFA（非财务建议）。</p>
+  </div>
+</footer>
+
+<button class="top-btn" aria-label="返回顶部">↑</button>
+<script src="/assets/subcommon-8k2m4x6n.js"></script>
+<noscript>
+  <main style="font-family:monospace;max-width:64ch;margin:2rem auto;padding:0 1rem;color:#ddd">
+    <h1>NULL PIT — Agent ID Exclusive Launch (BSC 56)</h1>
+    <p>10,000 lots × 0.003 BNB fixed-price token launch. 1,110 free lots in 4 one-hour rounds (444/333/222/111) (T to T+4h): 1 per Agent ID, first-come-first-served within each round. BNB escrow, sold-out liquidity locked to dead LP, full principal refunds if the sale fails or settlement expires.</p>
+    <p>页面：<a href="/">发售</a> · <a href="/arena/">竞技场</a> · <a href="/rewards/">奖励</a> · <a href="/guide/">指南</a></p>
+    <p>Machine-readable endpoints: <a href="/launch-config.json">/launch-config.json</a> (19-key launch config; 404 = not configured yet), <a href="/agent-manifest.json">/agent-manifest.json</a>, <a href="/llms.txt">/llms.txt</a>, <a href="/sitemap.xml">/sitemap.xml</a>.</p>
+    <p>Trust only addresses published in /launch-config.json on this domain. Your wallet must own a registered SPACE ID Agent ID (registry 0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F) before sale start. All payments are user-wallet transactions on BSC; this page only reads the chain.</p>
+  </main>
+</noscript>
+</body>
 </html>
