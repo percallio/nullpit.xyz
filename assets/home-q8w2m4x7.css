@@ -18,3 +18,10 @@ body{overflow:auto !important;height:auto !important;min-height:100%}
 .card.entry p{color:var(--dust);font-size:.92em;line-height:1.7;flex:1}
 .card.entry .go{color:var(--acid);font-weight:700;font-size:.9em;margin-top:10px}
 .card.entry:hover .go{text-decoration:underline}
+
+/* 退款保障横幅: hero 下方, acid 描边强调 */
+.guarantee{margin:10px 0 26px;padding:16px 20px;border:1px solid var(--acid);background:linear-gradient(180deg,rgba(197,245,66,.09),rgba(197,245,66,.02))}
+.guarantee b{color:var(--acid);font-size:1.12em;letter-spacing:.01em}
+.guarantee span{display:block;margin-top:6px;color:var(--paper);opacity:.92;font-size:.95em;line-height:1.75}
+.guarantee code{color:var(--acid);font-family:inherit}
+@media (max-width:700px){.guarantee{padding:14px 16px}.guarantee b{font-size:1.05em}}
